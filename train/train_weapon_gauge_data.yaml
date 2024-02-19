@@ -1,0 +1,10 @@
+path: /home/maohika/work/ika/dataset/weapon_gauge
+train: train
+val: val
+
+nc: 3
+names: [
+  'weapon_guage',
+  'sub_weapon_icon',
+  'sp_weapon_icon'
+]

@@ -1,0 +1,10 @@
+task: detect
+mode: train
+
+model: yolov8n.pt
+device: cuda
+batch: 8
+epochs: 100
+imgsz: 540
+
+data: /home/maohika/work/ika/train/train_weapon_gauge_data.yaml

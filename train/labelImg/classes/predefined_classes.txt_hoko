@@ -1,0 +1,8 @@
+notification_count_lead
+notification_count_behind
+notification_hoko_get
+notification_hoko_lost
+notification_hoko_robbed
+notification_hoko_stop
+notification_hoko_barrier_pass
+notification_hoko_barrier_passed

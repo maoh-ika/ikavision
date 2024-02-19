@@ -1,0 +1,9 @@
+path: /home/maohika/work/ika/dataset/ink_tank
+train: train
+val: val
+
+nc: 2
+names: [
+  'ink_tank_consumed',
+  'ink_tank_rest'
+]

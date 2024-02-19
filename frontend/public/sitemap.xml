@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <url>
+      <loc>https://ikavision.ikaruga.app</loc>
+   </url>
+   <url>
+      <loc>https://ikavision.ikaruga.app/battleList?tab=completed</loc>
+   </url>
+   <url>
+      <loc>https://ikavision.ikaruga.app/battleList?tab=processing</loc>
+   </url>
+   <url>
+      <loc>https://ikavision.ikaruga.app/battleEnvironment?tab=battles</loc>
+   </url>
+   <url>
+      <loc>https://ikavision.ikaruga.app/battleEnvironment?tab=usage</loc>
+   </url>
+   <url>
+      <loc>https://ikavision.ikaruga.app/battleEnvironment?tab=winRate</loc>
+   </url>
+   <url>
+      <loc>https://ikavision.ikaruga.app/docs/what-is-ikavision</loc>
+   </url>
+   <url>
+      <loc>https://ikavision.ikaruga.app/docs/search-conditions</loc>
+   </url>
+</urlset>

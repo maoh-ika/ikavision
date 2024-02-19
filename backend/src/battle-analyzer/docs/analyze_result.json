@@ -1,0 +1,50 @@
+{
+    "job_id": "aa",
+    "user_id": "aa",
+    "movie_name": "sss.mp4",
+    "movie_width": 100,
+    "movie_height": 100,
+    "frame_rate": 30,
+    "battle_rule": "nawabari",
+    "battle_stage": "masaba",
+    "team": [
+        {
+            "id": "aa",
+            "name": "aa",
+            "nickname": "aa",
+            "lamp_ord": 0
+        }
+    ],
+    "enemy": [
+        {
+            "id": "aa",
+            "name": "aa",
+            "nickname": "aa",
+            "lamp_ord": 0
+        }
+    ],
+    "main_player_index": 0,
+    "team_color": [255, 255, 255],
+    "enemy_color": [255, 255, 255],
+    "battle_open_event": {
+        "start_frame": 0,
+        "end_frame": 10
+    },
+    "battle_end_event": {
+        "start_frame": 0,
+        "end_frame": 10
+    },
+    "death_events": [
+        {
+            "death_player_index": 0,
+            "start_frame": 0,
+            "end_frame": 10
+        }
+    ],
+    "ink_tank_states": [
+        {
+            "ink_level": 0.1,
+            "frame": 10
+        }
+    ]
+}

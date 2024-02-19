@@ -1,0 +1,50 @@
+{
+    "title": "Splatoon3",
+    "version": "5.1.0",
+    "bukiId": "vincent",
+    "bukiName": "\u30d5\u30a3\u30f3\u30bb\u30f3\u30c8",
+    "bukiType": "fude",
+    "subWeapon": "curling_bomb",
+    "spWeapon": "hop_sonar",
+    "spRequiredPoints": 200,
+    "weight": "middle",
+    "mainWeapon": {
+        "shake": {
+            "minEffectiveRange": 2.5,
+            "maxEffectiveRange": 2.5,
+            "minPaintRange": 3.1,
+            "maxPaintRange": 3.1,
+            "certainKillRange_2": 1.5,
+            "certainKillRange_3": 2.4,
+            "minHitDamage": 16.0,
+            "maxHitDamage": 60.0,
+            "minCertainKillNumber": 2.0,
+            "maxCertainKillNumber": 4.0,
+            "shootIntervalFrames": 15,
+            "secondsPerKill": 0.667,
+            "dps": 240.0,
+            "shootingDurationSeconds": 5.0,
+            "shootRecoveryFrames": 11,
+            "inkConsumptionPercent": 4.8,
+            "shootCapability": 20.0,
+            "hitoSpeedInShooting": 0.24,
+            "inkRecoveryFrames": 50,
+            "hitoSpeed": 0.96,
+            "paintPointPerShoot": 16.0,
+            "ikaSpeed": 1.92
+        },
+        "paint": {
+            "minHitDamage": 30.0,
+            "maxHitDamage": 30.0,
+            "minCertainKillNumber": 4.0,
+            "maxCertainKillNumber": 4.0,
+            "paintMovingDuration": 9.25,
+            "paintMovingRange": 0.44,
+            "inkConsumptionPercent": 10.8,
+            "shootCapability": null,
+            "minPaintMovingSpeed": 1.8,
+            "maxPaintMovingSpeed": 1.8,
+            "inkRecoveryFrames": 30
+        }
+    }
+}

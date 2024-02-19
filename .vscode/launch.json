@@ -1,0 +1,2050 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "anlyze-job-register (python3.9)",
+      "invokeTarget": {
+        "target": "template",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisJobRegisterFunction"
+      },
+      "lambda": {
+        "payload": {
+            "json": {
+            "Records": [
+                {
+                    "eventVersion": "2.0",
+                    "eventSource": "aws:s3",
+                    "awsRegion": "{region}",
+                    "eventTime": "1970-01-01T00:00:00Z",
+                    "eventName": "ObjectCreated:Put",
+                    "userIdentity": {
+                        "principalId": "EXAMPLE"
+                    },
+                    "requestParameters": {
+                        "sourceIPAddress": "127.0.0.1"
+                    },
+                    "responseElements": {
+                        "x-amz-request-id": "EXAMPLE123456789",
+                        "x-amz-id-2": "EXAMPLE123/5678abcdefghijklambdaisawesome/mnopqrstuvwxyzABCDEFGH"
+                    },
+                    "s3": {
+                        "s3SchemaVersion": "1.0",
+                        "configurationId": "testConfigRule",
+                        "bucket": {
+                            "name": "battle-movie",
+                            "ownerIdentity": {
+                                "principalId": "EXAMPLE"
+                            },
+                            "arn": "arn:{partition}:s3:::battle-movie"
+                        },
+                        "object": {
+                            "key": "testuser/36e961c7-d61f-4d8d-962e-2873dc92ec94.mp4",
+                            "size": 1024,
+                            "eTag": "0123456789abcdef0123456789abcdef",
+                            "sequencer": "0A1B2C3D4E5F678901"
+                        }
+                    }
+                }
+            ]
+
+            },
+        },
+        "environmentVariables": {},
+        "runtime": "python3.9"
+      },
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis (create)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisJobWriteFunction"
+      },
+      "api": {
+        "path": "/analysis_job",
+        "httpMethod": "post",
+        "payload": {
+          "json": {
+            "method": "create_job",
+            "user_id": "testuser",
+            "job_name": "testjob",
+            "movie_source": "youtube",
+            "battle_date": 123
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis (download_url)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisJobWriteFunction"
+      },
+      "api": {
+        "path": "/analysis_job",
+        "httpMethod": "post",
+        "payload": {
+          "json": {
+            "method": "download_url",
+            "user_id": "testuser",
+            "job_id": "3a5990b1-da4d-4be3-9834-6087f2b81afa",
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis (get)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisJobReadFunction"
+      },
+      "api": {
+        "path": "/analysis_job",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "get",
+            "user_id": "testuser",
+            "job_id": "testuser"
+          }
+        }
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis (query)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisJobReadFunction"
+      },
+      "api": {
+        "path": "/analysis_job",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "query",
+            "user_id": "testuser"
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis (job_ids)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisJobReadFunction"
+      },
+      "api": {
+        "path": "/analysis_job",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "query_job_ids",
+            "user_id": "UC3dMKGxwpf_SDPkq0HWFhPQ",
+            "state": "completed"
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis_result (samary jobIds)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisResultReadFunction"
+      },
+      "api": {
+        "path": "/analysis_result",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "query_sammaries",
+            "user_id": "splatoon3_environment",
+            "job_ids": [
+              "f05760c8-1b77-4e81-8e17-ed1e410a7c26",
+            ]
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis_result (samary pagination)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisResultReadFunction"
+      },
+      "api": {
+        "path": "/analysis_result",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "query_sammaries_pagination",
+            "user_id": "splatoon3_environment",
+            "page_size": 100
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis_result (samary battel date)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisResultReadFunction"
+      },
+      "api": {
+        "path": "/analysis_result",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "query_sammaries",
+            "user_id": "splatoon3_environment",
+            "start_battle_date": 1704090351,
+            "end_battle_date": 1704097812
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis_result (result resultId)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisResultReadFunction"
+      },
+      "api": {
+        "path": "/analysis_result",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "get_result",
+            "user_id": "splatoon3_environment",
+            "result_id": "03d797ef-d441-4aa7-84bf-cffc2bf817a7"
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis_result (result jobId)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisResultReadFunction"
+      },
+      "api": {
+        "path": "/analysis_result",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "get_results",
+            "user_id": "testuser",
+            "job_id": "3a5990b1-da4d-4be3-9834-6087f2b81afa"
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis_result (result date)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisResultReadFunction"
+      },
+      "api": {
+        "path": "/analysis_result",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "get_results",
+            "user_id": "splatoon3_environment",
+            "start_battle_date": 1705902035,
+            "end_battle_date": 1705988410
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "result index(stream new)",
+      "invokeTarget": {
+        "target": "template",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisResultIndexWriteFunction"
+      },
+      "lambda": {
+        "payload": {
+            "json": {
+              "Records": [
+                {
+                  "eventID": "ecbdabbe517afd39c63d59b684e4dd29",
+                  "eventName": "INSERT",
+                  "eventVersion": "1.1",
+                  "eventSource": "aws:dynamodb",
+                  "awsRegion": "ap-northeast-1",
+                  "dynamodb": {
+                      "ApproximateCreationDateTime": 1581430684,
+                      "NewImage": {
+                        "match_type": "x_match",
+                        "match_rate": null,
+                        "user_id": "testuser",
+                        "job_id": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b",
+                        "battle_date": 1705629600,
+                        "splatoon_title": "splatoon3",
+                        "battle_end_event": {
+                        "end_frame": 9825,
+                        "start_frame": 9765
+                        },
+                        "battle_result_event": {
+                        "end_frame": 9825,
+                        "start_frame": 9765
+                        },
+                        "battle_end_frame": 9825,
+                        "battle_frames": 1,
+                        "battle_open_event": {
+                        "end_frame": 210,
+                        "start_frame": 90
+                        },
+                        "battle_open_frame": 90,
+                        "battle_result": "lose",
+                        "battle_rule": "hoko",
+                        "battle_stage": "sumeshi",
+                        "created_at": 1698325724,
+                        "death_count": 1,
+                        "kill_count": 2,
+                        "sp_count": 3,
+                        "enemy_result_count": 3,
+                        "team_result_count": 3,
+                        "death_events": [
+                        {
+                          "death_player_index": 3,
+                          "death_player_side": "enemy",
+                          "death_reason": "",
+                          "end_frame": 1284,
+                          "kill_player_index": null,
+                          "kill_player_side": null,
+                          "reason_type": "unknown",
+                          "start_frame": 1038
+                        },
+                        ],
+                        "enemy": [
+                        {
+                          "id": ";3356",
+                          "lamp_ord": 0,
+                          "name": "サクサクサク",
+                          "nickname": "トサクサクの"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 1,
+                          "name": "にとうふざえもん",
+                          "nickname": "たうけられないナワバトラト"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 2,
+                          "name": "かんなき",
+                          "nickname": "そでのフリンヤス"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 3,
+                          "name": "fao",
+                          "nickname": "アツアツのあかり"
+                        }
+                        ],
+                        "enemy_bukis": [
+                        {
+                          "main_weapon": "long_blaster",
+                          "sp_weapon": "hop_sonar",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "hydrant",
+                          "sp_weapon": "nice_dama",
+                          "sub_weapon": "robot_bomb"
+                        },
+                        {
+                          "main_weapon": "variable_roller",
+                          "sp_weapon": "multi_missile",
+                          "sub_weapon": "trap"
+                        },
+                        {
+                          "main_weapon": "hero_shooter_replica",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        }
+                        ],
+                        "enemy_color": [
+                        66,
+                        203,
+                        169
+                        ],
+                        "enemy_count_events": [
+                        ],
+                        "frame_rate": 30,
+                        "ink_tank_states": [
+                        ],
+                        "kill_events": [
+                        {
+                          "death_player_index": null,
+                          "death_player_side": null,
+                          "end_frame": 654,
+                          "kill_player_index": 3,
+                          "kill_player_side": "team",
+                          "start_frame": 549
+                        },
+                        ],
+                        "main_player_index": 3,
+                        "movie_frames": 9830,
+                        "movie_height": 720,
+                        "movie_name": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b.mp4",
+                        "movie_width": 1280,
+                        "player_number_balance_events": [
+                        ],
+                        "result_id": "00a24170-5b39-4652-8fe8-0947acd9c22f",
+                        "special_weapon_events": [
+                        ],
+                        "team": [
+                        {
+                          "id": "",
+                          "lamp_ord": 0,
+                          "name": "Nlkb",
+                          "nickname": "ふわふわのすりみ"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 1,
+                          "name": "セコマc7",
+                          "nickname": "のチヤンスメ-カ-"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 2,
+                          "name": "~z",
+                          "nickname": "もふたふのカリスフ"
+                        },
+                        {
+                          "id": "&1816",
+                          "lamp_ord": 3,
+                          "name": "いかるが",
+                          "nickname": "まことのマンタロ-フアン"
+                        }
+                        ],
+                        "team_bukis": [
+                        {
+                          "main_weapon": "spla_shooter",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_shooter",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_roller",
+                          "sp_weapon": "great_barrier",
+                          "sub_weapon": "curling_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_shooter_collabo",
+                          "sp_weapon": "triple_tornade",
+                          "sub_weapon": "splash_bomb"
+                        }
+                        ],
+                        "team_color": [
+                        190,
+                        81,
+                        72
+                        ],
+                        "team_count_events": [
+                        ],
+                        "version": "5.0.1"
+                      },
+                      "SequenceNumber": "66400000000000679556686",
+                      "SizeBytes": 6,
+                      "StreamViewType": "NEW_IMAGE"
+                  },
+                  "eventSourceARN": "arn:aws:dynamodb:ap-northeast-1:111:table/ssss/stream/aaa"
+                }
+              ]
+            },
+        },
+        "environmentVariables": {},
+        "runtime": "python3.9"
+      },
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "result index(stream delete)",
+      "invokeTarget": {
+        "target": "template",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisResultIndexWriteFunction"
+      },
+      "lambda": {
+        "payload": {
+            "json": {
+              "Records": [
+                {
+                  "eventID": "ecbdabbe517afd39c63d59b684e4dd29",
+                  "eventName": "REMOVE",
+                  "eventVersion": "1.1",
+                  "eventSource": "aws:dynamodb",
+                  "awsRegion": "ap-northeast-1",
+                  "dynamodb": {
+                      "ApproximateCreationDateTime": 1581430684,
+                      "OldImage": {
+                        "result_id": "8df64f6c-1e91-4f92-86c3-610158cc98d6",
+                      }
+                    }
+                }
+              ]
+            }
+        }
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "result index(stream update)",
+      "invokeTarget": {
+        "target": "template",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisResultIndexWriteFunction"
+      },
+      "lambda": {
+        "payload": {
+            "json": {
+              "Records": [
+                {
+                  "eventID": "ecbdabbe517afd39c63d59b684e4dd29",
+                  "eventName": "MODIFY",
+                  "eventVersion": "1.1",
+                  "eventSource": "aws:dynamodb",
+                  "awsRegion": "ap-northeast-1",
+                  "dynamodb": {
+                      "ApproximateCreationDateTime": 1581430684,
+                      "OldImage": {
+                        "match_type": "x_match",
+                        "match_rate": null,
+                        "user_id": "testuser",
+                        "job_id": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b",
+                        "battle_date": 1705629600,
+                        "splatoon_title": "splatoon3",
+                        "battle_end_event": {
+                        "end_frame": 9825,
+                        "start_frame": 9765
+                        },
+                        "battle_result_event": {
+                        "end_frame": 9825,
+                        "start_frame": 9765
+                        },
+                        "battle_end_frame": 9825,
+                        "battle_frames": 1,
+                        "battle_open_event": {
+                        "end_frame": 210,
+                        "start_frame": 90
+                        },
+                        "battle_open_frame": 90,
+                        "battle_result": "lose",
+                        "battle_rule": "hoko",
+                        "battle_stage": "sumeshi",
+                        "created_at": 1698325724,
+                        "death_count": 1,
+                        "kill_count": 2,
+                        "sp_count": 3,
+                        "enemy_result_count": 3,
+                        "team_result_count": 3,
+                        "death_events": [
+                        {
+                          "death_player_index": 3,
+                          "death_player_side": "enemy",
+                          "death_reason": "",
+                          "end_frame": 1284,
+                          "kill_player_index": null,
+                          "kill_player_side": null,
+                          "reason_type": "unknown",
+                          "start_frame": 1038
+                        },
+                        ],
+                        "enemy": [
+                        {
+                          "id": ";3356",
+                          "lamp_ord": 0,
+                          "name": "サクサク",
+                          "nickname": "トサクサクの"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 1,
+                          "name": "にとうふざえもん",
+                          "nickname": "たうけられないナワバトラト"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 2,
+                          "name": "かんなき",
+                          "nickname": "そでのフリンヤス"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 3,
+                          "name": "fao",
+                          "nickname": "アツアツのあかり"
+                        }
+                        ],
+                        "enemy_bukis": [
+                        {
+                          "main_weapon": "long_blaster",
+                          "sp_weapon": "hop_sonar",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "hydrant",
+                          "sp_weapon": "nice_dama",
+                          "sub_weapon": "robot_bomb"
+                        },
+                        {
+                          "main_weapon": "variable_roller",
+                          "sp_weapon": "multi_missile",
+                          "sub_weapon": "trap"
+                        },
+                        {
+                          "main_weapon": "hero_shooter_replica",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        }
+                        ],
+                        "enemy_color": [
+                        66,
+                        203,
+                        169
+                        ],
+                        "enemy_count_events": [
+                        ],
+                        "frame_rate": 30,
+                        "ink_tank_states": [
+                        ],
+                        "kill_events": [
+                        {
+                          "death_player_index": null,
+                          "death_player_side": null,
+                          "end_frame": 654,
+                          "kill_player_index": 3,
+                          "kill_player_side": "team",
+                          "start_frame": 549
+                        },
+                        ],
+                        "main_player_index": 3,
+                        "movie_frames": 9830,
+                        "movie_height": 720,
+                        "movie_name": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b.mp4",
+                        "movie_width": 1280,
+                        "player_number_balance_events": [
+                        ],
+                        "result_id": "8df64f6c-1e91-4f92-86c3-610158cc98d6",
+                        "special_weapon_events": [
+                        ],
+                        "team": [
+                        {
+                          "id": "",
+                          "lamp_ord": 0,
+                          "name": "Nlkb",
+                          "nickname": "ふわふわのすりみ"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 1,
+                          "name": "セコマc7",
+                          "nickname": "のチヤンスメ-カ-"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 2,
+                          "name": "~z",
+                          "nickname": "もふたふのカリスフ"
+                        },
+                        {
+                          "id": "&1816",
+                          "lamp_ord": 3,
+                          "name": "いかるが",
+                          "nickname": "まことのマンタロ-フアン"
+                        }
+                        ],
+                        "team_bukis": [
+                        {
+                          "main_weapon": "spla_shooter",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_shooter",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_roller",
+                          "sp_weapon": "great_barrier",
+                          "sub_weapon": "curling_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_shooter_collabo",
+                          "sp_weapon": "triple_tornade",
+                          "sub_weapon": "splash_bomb"
+                        }
+                        ],
+                        "team_color": [
+                        190,
+                        81,
+                        72
+                        ],
+                        "team_count_events": [
+                        ],
+                        "version": "5.0.1"
+                      },
+                      "NewImage": {
+                        "match_type": "x_match",
+                        "match_rate": null,
+                        "user_id": "testuser",
+                        "job_id": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b",
+                        "battle_date": 1705629600,
+                        "splatoon_title": "splatoon3",
+                        "battle_end_event": {
+                        "end_frame": 9825,
+                        "start_frame": 9765
+                        },
+                        "battle_result_event": {
+                        "end_frame": 9825,
+                        "start_frame": 9765
+                        },
+                        "battle_end_frame": 9825,
+                        "battle_frames": 1,
+                        "battle_open_event": {
+                        "end_frame": 210,
+                        "start_frame": 90
+                        },
+                        "battle_open_frame": 90,
+                        "battle_result": "lose",
+                        "battle_rule": "hoko",
+                        "battle_stage": "sumeshi",
+                        "created_at": 1698325724,
+                        "death_count": 1,
+                        "kill_count": 2,
+                        "sp_count": 3,
+                        "enemy_result_count": 3,
+                        "team_result_count": 3,
+                        "death_events": [
+                        {
+                          "death_player_index": 3,
+                          "death_player_side": "enemy",
+                          "death_reason": "",
+                          "end_frame": 1284,
+                          "kill_player_index": null,
+                          "kill_player_side": null,
+                          "reason_type": "unknown",
+                          "start_frame": 1038
+                        },
+                        ],
+                        "enemy": [
+                        {
+                          "id": ";3356",
+                          "lamp_ord": 0,
+                          "name": "aaa",
+                          "nickname": "トサクサクの"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 1,
+                          "name": "bbbb",
+                          "nickname": "たうけられないナワバトラト"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 2,
+                          "name": "cccc",
+                          "nickname": "そでのフリンヤス"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 3,
+                          "name": "ddd",
+                          "nickname": "アツアツのあかり"
+                        }
+                        ],
+                        "enemy_bukis": [
+                        {
+                          "main_weapon": "long_blaster",
+                          "sp_weapon": "hop_sonar",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "hydrant",
+                          "sp_weapon": "nice_dama",
+                          "sub_weapon": "robot_bomb"
+                        },
+                        {
+                          "main_weapon": "variable_roller",
+                          "sp_weapon": "multi_missile",
+                          "sub_weapon": "trap"
+                        },
+                        {
+                          "main_weapon": "hero_shooter_replica",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        }
+                        ],
+                        "enemy_color": [
+                        66,
+                        203,
+                        169
+                        ],
+                        "enemy_count_events": [
+                        ],
+                        "frame_rate": 30,
+                        "ink_tank_states": [
+                        ],
+                        "kill_events": [
+                        {
+                          "death_player_index": null,
+                          "death_player_side": null,
+                          "end_frame": 654,
+                          "kill_player_index": 3,
+                          "kill_player_side": "team",
+                          "start_frame": 549
+                        },
+                        ],
+                        "main_player_index": 3,
+                        "movie_frames": 9830,
+                        "movie_height": 720,
+                        "movie_name": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b.mp4",
+                        "movie_width": 1280,
+                        "player_number_balance_events": [
+                        ],
+                        "result_id": "8df64f6c-1e91-4f92-86c3-610158cc98d6",
+                        "special_weapon_events": [
+                        ],
+                        "team": [
+                        {
+                          "id": "",
+                          "lamp_ord": 0,
+                          "name": "Nlkb",
+                          "nickname": "ふわふわのすりみ"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 1,
+                          "name": "セコマc7",
+                          "nickname": "のチヤンスメ-カ-"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 2,
+                          "name": "~z",
+                          "nickname": "もふたふのカリスフ"
+                        },
+                        {
+                          "id": "&1816",
+                          "lamp_ord": 3,
+                          "name": "いかるが",
+                          "nickname": "まことのマンタロ-フアン"
+                        }
+                        ],
+                        "team_bukis": [
+                        {
+                          "main_weapon": "spla_shooter",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_shooter",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_roller",
+                          "sp_weapon": "great_barrier",
+                          "sub_weapon": "curling_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_shooter_collabo",
+                          "sp_weapon": "triple_tornade",
+                          "sub_weapon": "splash_bomb"
+                        }
+                        ],
+                        "team_color": [
+                        190,
+                        81,
+                        72
+                        ],
+                        "team_count_events": [
+                        ],
+                        "version": "5.0.1"
+                      },
+                      "SequenceNumber": "66400000000000679556686",
+                      "SizeBytes": 6,
+                      "StreamViewType": "NEW_IMAGE"
+                  },
+                      "SequenceNumber": "66400000000000679556686",
+                      "SizeBytes": 6,
+                      "StreamViewType": "NEW_IMAGE"
+                  },
+                  "eventSourceARN": "arn:aws:dynamodb:ap-northeast-1:111:table/ssss/stream/aaa"
+                }
+              ]
+            },
+        },
+        "environmentVariables": {},
+        "runtime": "python3.9"
+      },
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis_result (search)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisResultIndexReadFunction"
+      },
+      "api": {
+        "path": "/analysis_result_index",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "search",
+            "team": ["サクサクサク"],
+            "page_index": 0,
+            "page_size": 20
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis_result (update)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisResultWriteFunction"
+      },
+      "api": {
+        "path": "/analysis_result",
+        "httpMethod": "post",
+        "payload": {
+          "json": {
+            "method": "update",
+            "user_id": "splatoon3_environment",
+            "result_id": "0000e0b7-7b77-4c6c-9471-64f56cc9be50",
+            "rule": "asari",
+            "stage": "cyozame",
+            "match_type": "bankara_match"
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "analysis_result (delete)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "AnalysisResultWriteFunction"
+      },
+      "api": {
+        "path": "/analysis_result",
+        "httpMethod": "post",
+        "payload": {
+          "json": {
+            "method": "delete",
+            "user_id": "splatoon3_environment",
+            "result_id": "12a039f8-202f-40f0-b90f-591224b4cbac",
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "statistics(add_result)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "BattleStatisticsWriteFunction"
+      },
+      "api": {
+        "path": "/battle_statistics",
+        "httpMethod": "post",
+        "payload": {
+          "json": {
+            "method": "add_result",
+            "user_id": "testuser",
+            "statistics_id": "testuser",
+            "result": {
+              "user_id": "testuser",
+              "job_id": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b",
+              "battle_end_event": {
+               "end_frame": 9825,
+               "start_frame": 9765
+              },
+              "battle_end_frame": 9825,
+              "battle_frames": 1,
+              "battle_open_event": {
+               "end_frame": 210,
+               "start_frame": 90
+              },
+              "battle_open_frame": 90,
+              "battle_result": "lose",
+              "battle_rule": "area",
+              "battle_stage": "sumeshi",
+              "created_at": 1698325724,
+              "death_events": [
+               {
+                "death_player_index": 3,
+                "death_player_side": "enemy",
+                "death_reason": "",
+                "end_frame": 1284,
+                "kill_player_index": null,
+                "kill_player_side": null,
+                "reason_type": "unknown",
+                "start_frame": 1038
+               },
+              ],
+              "enemy": [
+               {
+                "id": ";3356",
+                "lamp_ord": 0,
+                "name": "サクサク",
+                "nickname": "トサクサクの"
+               },
+               {
+                "id": "",
+                "lamp_ord": 1,
+                "name": "にとうふざえもん",
+                "nickname": "たうけられないナワバトラト"
+               },
+               {
+                "id": "",
+                "lamp_ord": 2,
+                "name": "かんなき",
+                "nickname": "そでのフリンヤス"
+               },
+               {
+                "id": "",
+                "lamp_ord": 3,
+                "name": "fao",
+                "nickname": "アツアツのあかり"
+               }
+              ],
+              "enemy_bukis": [
+               {
+                "main_weapon": "long_blaster",
+                "sp_weapon": "hop_sonar",
+                "sub_weapon": "kyuuban_bomb"
+               },
+               {
+                "main_weapon": "hydrant",
+                "sp_weapon": "nice_dama",
+                "sub_weapon": "robot_bomb"
+               },
+               {
+                "main_weapon": "variable_roller",
+                "sp_weapon": "multi_missile",
+                "sub_weapon": "trap"
+               },
+               {
+                "main_weapon": "hero_shooter_replica",
+                "sp_weapon": "ultra_shoot",
+                "sub_weapon": "kyuuban_bomb"
+               }
+              ],
+              "enemy_color": [
+               66,
+               203,
+               169
+              ],
+              "enemy_count_events": [
+               ],
+              "frame_rate": 30,
+              "ink_tank_states": [
+              ],
+              "kill_events": [
+               {
+                "death_player_index": null,
+                "death_player_side": null,
+                "end_frame": 654,
+                "kill_player_index": 3,
+                "kill_player_side": "team",
+                "start_frame": 549
+               },
+              ],
+              "main_player_index": 3,
+              "movie_frames": 9830,
+              "movie_height": 720,
+              "movie_name": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b.mp4",
+              "movie_width": 1280,
+              "player_number_balance_events": [
+              ],
+              "result_id": "8df64f6c-1e91-4f92-86c3-610158cc98d6",
+              "special_weapon_events": [
+               ],
+              "team": [
+               {
+                "id": "",
+                "lamp_ord": 0,
+                "name": "Nlkb",
+                "nickname": "ふわふわのすりみ"
+               },
+               {
+                "id": "",
+                "lamp_ord": 1,
+                "name": "セコマc7",
+                "nickname": "のチヤンスメ-カ-"
+               },
+               {
+                "id": "",
+                "lamp_ord": 2,
+                "name": "~z",
+                "nickname": "もふたふのカリスフ"
+               },
+               {
+                "id": "&1816",
+                "lamp_ord": 3,
+                "name": "いかるが",
+                "nickname": "まことのマンタロ-フアン"
+               }
+              ],
+              "team_bukis": [
+               {
+                "main_weapon": "spla_shooter",
+                "sp_weapon": "ultra_shoot",
+                "sub_weapon": "kyuuban_bomb"
+               },
+               {
+                "main_weapon": "promodeler_rg",
+                "sp_weapon": "nice_dama",
+                "sub_weapon": "sprinkler"
+               },
+               {
+                "main_weapon": "spla_roller",
+                "sp_weapon": "great_barrier",
+                "sub_weapon": "curling_bomb"
+               },
+               {
+                "main_weapon": "spla_shooter_collabo",
+                "sp_weapon": "triple_tornade",
+                "sub_weapon": "splash_bomb"
+               }
+              ],
+              "team_color": [
+               190,
+               81,
+               72
+              ],
+              "team_count_events": [
+              ],
+              "version": "5.0.1"
+             }
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "environment (add_results date)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "BattleEnvironmentFunction"
+      },
+      "api": {
+        "path": "/battle_environment",
+        "httpMethod": "post",
+        "payload": {
+          "json": {
+            "method": "add_results",
+            "start_date": 1705905241,
+            "end_date": 1705991641,
+            "splatoon_title": "splatoon3",
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "environment (query season)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "BattleEnvironmentReadFunction"
+      },
+      "api": {
+        "path": "/battle_environment",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "query_seasons",
+            "splatoon_title": "splatoon3",
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "environment (query daily)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "BattleEnvironmentReadFunction"
+      },
+      "api": {
+        "path": "/battle_environment",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "query_daily",
+            "splatoon_title": "splatoon3",
+            "start_date": 1702220400,
+            "end_date": 1705071600
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "environment (query season match)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "BattleEnvironmentReadFunction"
+      },
+      "api": {
+        "path": "/battle_environment",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "query_seasons_match",
+            "splatoon_title": "splatoon3",
+            "match_rate": "2000_2500",
+            "match_type": "x_match"
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "environment (query season x)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "BattleEnvironmentReadFunction"
+      },
+      "api": {
+        "path": "/battle_environment",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "query_seasons_x_match",
+            "splatoon_title": "splatoon3",
+            "ignore_rates": []
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "environment (query daily x)",
+      "invokeTarget": {
+        "target": "api",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "BattleEnvironmentReadFunction"
+      },
+      "api": {
+        "path": "/battle_environment",
+        "httpMethod": "put",
+        "payload": {
+          "json": {
+            "method": "query_daily_x_match",
+            "splatoon_title": "splatoon3",
+            "start_date": 1704380400,
+            "end_date": 1706839200,
+            "ignore_rates": []
+          }
+        }
+      },
+      "lambda": {
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "environment(stream new)",
+      "invokeTarget": {
+        "target": "template",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "BattleEnvironmentWriteFunction"
+      },
+      "lambda": {
+        "payload": {
+            "json": {
+              "Records": [
+                {
+                  "eventID": "ecbdabbe517afd39c63d59b684e4dd29",
+                  "eventName": "INSERT",
+                  "eventVersion": "1.1",
+                  "eventSource": "aws:dynamodb",
+                  "awsRegion": "ap-northeast-1",
+                  "dynamodb": {
+                      "ApproximateCreationDateTime": 1581430684,
+                      "NewImage": {
+                        "match_type": "x_match",
+                        "match_rate": null,
+                        "user_id": "testuser",
+                        "job_id": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b",
+                        "battle_date": 1705629600,
+                        "splatoon_title": "splatoon3",
+                        "battle_end_event": {
+                        "end_frame": 9825,
+                        "start_frame": 9765
+                        },
+                        "battle_end_frame": 9825,
+                        "battle_frames": 1,
+                        "battle_open_event": {
+                        "end_frame": 210,
+                        "start_frame": 90
+                        },
+                        "battle_open_frame": 90,
+                        "battle_result": "lose",
+                        "battle_rule": "hoko",
+                        "battle_stage": "sumeshi",
+                        "created_at": 1698325724,
+                        "death_events": [
+                        {
+                          "death_player_index": 3,
+                          "death_player_side": "enemy",
+                          "death_reason": "",
+                          "end_frame": 1284,
+                          "kill_player_index": null,
+                          "kill_player_side": null,
+                          "reason_type": "unknown",
+                          "start_frame": 1038
+                        },
+                        ],
+                        "enemy": [
+                        {
+                          "id": ";3356",
+                          "lamp_ord": 0,
+                          "name": "サクサク",
+                          "nickname": "トサクサクの"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 1,
+                          "name": "にとうふざえもん",
+                          "nickname": "たうけられないナワバトラト"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 2,
+                          "name": "かんなき",
+                          "nickname": "そでのフリンヤス"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 3,
+                          "name": "fao",
+                          "nickname": "アツアツのあかり"
+                        }
+                        ],
+                        "enemy_bukis": [
+                        {
+                          "main_weapon": "long_blaster",
+                          "sp_weapon": "hop_sonar",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "hydrant",
+                          "sp_weapon": "nice_dama",
+                          "sub_weapon": "robot_bomb"
+                        },
+                        {
+                          "main_weapon": "variable_roller",
+                          "sp_weapon": "multi_missile",
+                          "sub_weapon": "trap"
+                        },
+                        {
+                          "main_weapon": "hero_shooter_replica",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        }
+                        ],
+                        "enemy_color": [
+                        66,
+                        203,
+                        169
+                        ],
+                        "enemy_count_events": [
+                        ],
+                        "frame_rate": 30,
+                        "ink_tank_states": [
+                        ],
+                        "kill_events": [
+                        {
+                          "death_player_index": null,
+                          "death_player_side": null,
+                          "end_frame": 654,
+                          "kill_player_index": 3,
+                          "kill_player_side": "team",
+                          "start_frame": 549
+                        },
+                        ],
+                        "main_player_index": 3,
+                        "movie_frames": 9830,
+                        "movie_height": 720,
+                        "movie_name": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b.mp4",
+                        "movie_width": 1280,
+                        "player_number_balance_events": [
+                        ],
+                        "result_id": "8df64f6c-1e91-4f92-86c3-610158cc98d6",
+                        "special_weapon_events": [
+                        ],
+                        "team": [
+                        {
+                          "id": "",
+                          "lamp_ord": 0,
+                          "name": "Nlkb",
+                          "nickname": "ふわふわのすりみ"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 1,
+                          "name": "セコマc7",
+                          "nickname": "のチヤンスメ-カ-"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 2,
+                          "name": "~z",
+                          "nickname": "もふたふのカリスフ"
+                        },
+                        {
+                          "id": "&1816",
+                          "lamp_ord": 3,
+                          "name": "いかるが",
+                          "nickname": "まことのマンタロ-フアン"
+                        }
+                        ],
+                        "team_bukis": [
+                        {
+                          "main_weapon": "spla_shooter",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_shooter",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_roller",
+                          "sp_weapon": "great_barrier",
+                          "sub_weapon": "curling_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_shooter_collabo",
+                          "sp_weapon": "triple_tornade",
+                          "sub_weapon": "splash_bomb"
+                        }
+                        ],
+                        "team_color": [
+                        190,
+                        81,
+                        72
+                        ],
+                        "team_count_events": [
+                        ],
+                        "version": "5.0.1"
+                      },
+                      "SequenceNumber": "66400000000000679556686",
+                      "SizeBytes": 6,
+                      "StreamViewType": "NEW_IMAGE"
+                  },
+                  "eventSourceARN": "arn:aws:dynamodb:ap-northeast-1:111:table/ssss/stream/aaa"
+                }
+              ]
+            },
+        },
+        "environmentVariables": {},
+        "runtime": "python3.9"
+      },
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "environment(stream del)",
+      "invokeTarget": {
+        "target": "template",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "BattleEnvironmentWriteFunction"
+      },
+      "lambda": {
+        "payload": {
+            "json": {
+              "Records": [
+                {
+                  "eventID": "ecbdabbe517afd39c63d59b684e4dd29",
+                  "eventName": "REMOVE",
+                  "eventVersion": "1.1",
+                  "eventSource": "aws:dynamodb",
+                  "awsRegion": "ap-northeast-1",
+                  "dynamodb": {
+                      "ApproximateCreationDateTime": 1581430684,
+                      "OldImage": {
+                        "user_id": "testuser",
+                        "job_id": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b",
+                        "battle_date": 1705629600,
+                        "splatoon_title": "splatoon3",
+                        "battle_end_event": {
+                        "end_frame": 9825,
+                        "start_frame": 9765
+                        },
+                        "battle_end_frame": 9825,
+                        "battle_frames": 1,
+                        "battle_open_event": {
+                        "end_frame": 210,
+                        "start_frame": 90
+                        },
+                        "battle_open_frame": 90,
+                        "battle_result": "lose",
+                        "battle_rule": "hoko",
+                        "battle_stage": "sumeshi",
+                        "created_at": 1698325724,
+                        "death_events": [
+                        {
+                          "death_player_index": 3,
+                          "death_player_side": "enemy",
+                          "death_reason": "",
+                          "end_frame": 1284,
+                          "kill_player_index": null,
+                          "kill_player_side": null,
+                          "reason_type": "unknown",
+                          "start_frame": 1038
+                        },
+                        ],
+                        "enemy": [
+                        {
+                          "id": ";3356",
+                          "lamp_ord": 0,
+                          "name": "サクサク",
+                          "nickname": "トサクサクの"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 1,
+                          "name": "にとうふざえもん",
+                          "nickname": "たうけられないナワバトラト"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 2,
+                          "name": "かんなき",
+                          "nickname": "そでのフリンヤス"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 3,
+                          "name": "fao",
+                          "nickname": "アツアツのあかり"
+                        }
+                        ],
+                        "enemy_bukis": [
+                        {
+                          "main_weapon": "long_blaster",
+                          "sp_weapon": "hop_sonar",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "hydrant",
+                          "sp_weapon": "nice_dama",
+                          "sub_weapon": "robot_bomb"
+                        },
+                        {
+                          "main_weapon": "variable_roller",
+                          "sp_weapon": "multi_missile",
+                          "sub_weapon": "trap"
+                        },
+                        {
+                          "main_weapon": "hero_shooter_replica",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        }
+                        ],
+                        "enemy_color": [
+                        66,
+                        203,
+                        169
+                        ],
+                        "enemy_count_events": [
+                        ],
+                        "frame_rate": 30,
+                        "ink_tank_states": [
+                        ],
+                        "kill_events": [
+                        {
+                          "death_player_index": null,
+                          "death_player_side": null,
+                          "end_frame": 654,
+                          "kill_player_index": 3,
+                          "kill_player_side": "team",
+                          "start_frame": 549
+                        },
+                        ],
+                        "main_player_index": 3,
+                        "movie_frames": 9830,
+                        "movie_height": 720,
+                        "movie_name": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b.mp4",
+                        "movie_width": 1280,
+                        "player_number_balance_events": [
+                        ],
+                        "result_id": "8df64f6c-1e91-4f92-86c3-610158cc98d6",
+                        "special_weapon_events": [
+                        ],
+                        "team": [
+                        {
+                          "id": "",
+                          "lamp_ord": 0,
+                          "name": "Nlkb",
+                          "nickname": "ふわふわのすりみ"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 1,
+                          "name": "セコマc7",
+                          "nickname": "のチヤンスメ-カ-"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 2,
+                          "name": "~z",
+                          "nickname": "もふたふのカリスフ"
+                        },
+                        {
+                          "id": "&1816",
+                          "lamp_ord": 3,
+                          "name": "いかるが",
+                          "nickname": "まことのマンタロ-フアン"
+                        }
+                        ],
+                        "team_bukis": [
+                        {
+                          "main_weapon": "spla_shooter",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_shooter",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_roller",
+                          "sp_weapon": "great_barrier",
+                          "sub_weapon": "curling_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_shooter_collabo",
+                          "sp_weapon": "triple_tornade",
+                          "sub_weapon": "splash_bomb"
+                        }
+                        ],
+                        "team_color": [
+                        190,
+                        81,
+                        72
+                        ],
+                        "team_count_events": [
+                        ],
+                        "version": "5.0.1"
+                      },
+                      "SequenceNumber": "66400000000000679556686",
+                      "SizeBytes": 6,
+                      "StreamViewType": "OLD_IMAGE"
+                  },
+                  "eventSourceARN": "arn:aws:dynamodb:ap-northeast-1:111:table/ssss/stream/aaa"
+                }
+              ]
+            },
+        },
+        "environmentVariables": {},
+        "runtime": "python3.9"
+      },
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "statistics(stream)",
+      "invokeTarget": {
+        "target": "template",
+        "templatePath": "${workspaceFolder}/backend/src/battle-analyzer/template.dev.yaml",
+        "logicalId": "BattleStatisticsWriteFunction"
+      },
+      "lambda": {
+        "payload": {
+            "json": {
+              "Records": [
+                {
+                  "eventID": "ecbdabbe517afd39c63d59b684e4dd29",
+                  "eventName": "INSERT",
+                  "eventVersion": "1.1",
+                  "eventSource": "aws:dynamodb",
+                  "awsRegion": "ap-northeast-1",
+                  "dynamodb": {
+                      "ApproximateCreationDateTime": 1581430684,
+                      "NewImage": {
+                        "user_id": "splatoon3_environment",
+                        "job_id": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b",
+                        "battle_date": 1705681925,
+                        "splatoon_title": "splatoon3",
+                        "battle_end_event": {
+                        "end_frame": 9825,
+                        "start_frame": 9765
+                        },
+                        "battle_end_frame": 9825,
+                        "battle_frames": 1,
+                        "battle_open_event": {
+                        "end_frame": 210,
+                        "start_frame": 90
+                        },
+                        "battle_open_frame": 90,
+                        "battle_result": "lose",
+                        "battle_rule": "hoko",
+                        "battle_stage": "sumeshi",
+                        "created_at": 1698325724,
+                        "death_events": [
+                        {
+                          "death_player_index": 3,
+                          "death_player_side": "enemy",
+                          "death_reason": "",
+                          "end_frame": 1284,
+                          "kill_player_index": null,
+                          "kill_player_side": null,
+                          "reason_type": "unknown",
+                          "start_frame": 1038
+                        },
+                        ],
+                        "enemy": [
+                        {
+                          "id": ";3356",
+                          "lamp_ord": 0,
+                          "name": "サクサク",
+                          "nickname": "トサクサクの"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 1,
+                          "name": "にとうふざえもん",
+                          "nickname": "たうけられないナワバトラト"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 2,
+                          "name": "かんなき",
+                          "nickname": "そでのフリンヤス"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 3,
+                          "name": "fao",
+                          "nickname": "アツアツのあかり"
+                        }
+                        ],
+                        "enemy_bukis": [
+                        {
+                          "main_weapon": "long_blaster",
+                          "sp_weapon": "hop_sonar",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "hydrant",
+                          "sp_weapon": "nice_dama",
+                          "sub_weapon": "robot_bomb"
+                        },
+                        {
+                          "main_weapon": "variable_roller",
+                          "sp_weapon": "multi_missile",
+                          "sub_weapon": "trap"
+                        },
+                        {
+                          "main_weapon": "hero_shooter_replica",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        }
+                        ],
+                        "enemy_color": [
+                        66,
+                        203,
+                        169
+                        ],
+                        "enemy_count_events": [
+                        ],
+                        "frame_rate": 30,
+                        "ink_tank_states": [
+                        ],
+                        "kill_events": [
+                        {
+                          "death_player_index": null,
+                          "death_player_side": null,
+                          "end_frame": 654,
+                          "kill_player_index": 3,
+                          "kill_player_side": "team",
+                          "start_frame": 549
+                        },
+                        ],
+                        "main_player_index": 3,
+                        "movie_frames": 9830,
+                        "movie_height": 720,
+                        "movie_name": "928c70cd-7fb3-4fb7-a4f7-2e040ccdda6b.mp4",
+                        "movie_width": 1280,
+                        "player_number_balance_events": [
+                        ],
+                        "result_id": "8df64f6c-1e91-4f92-86c3-610158cc98d6",
+                        "special_weapon_events": [
+                        ],
+                        "team": [
+                        {
+                          "id": "",
+                          "lamp_ord": 0,
+                          "name": "Nlkb",
+                          "nickname": "ふわふわのすりみ"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 1,
+                          "name": "セコマc7",
+                          "nickname": "のチヤンスメ-カ-"
+                        },
+                        {
+                          "id": "",
+                          "lamp_ord": 2,
+                          "name": "~z",
+                          "nickname": "もふたふのカリスフ"
+                        },
+                        {
+                          "id": "&1816",
+                          "lamp_ord": 3,
+                          "name": "いかるが",
+                          "nickname": "まことのマンタロ-フアン"
+                        }
+                        ],
+                        "team_bukis": [
+                        {
+                          "main_weapon": "spla_shooter",
+                          "sp_weapon": "ultra_shoot",
+                          "sub_weapon": "kyuuban_bomb"
+                        },
+                        {
+                          "main_weapon": "promodeler_rg",
+                          "sp_weapon": "nice_dama",
+                          "sub_weapon": "sprinkler"
+                        },
+                        {
+                          "main_weapon": "spla_roller",
+                          "sp_weapon": "great_barrier",
+                          "sub_weapon": "curling_bomb"
+                        },
+                        {
+                          "main_weapon": "spla_shooter_collabo",
+                          "sp_weapon": "triple_tornade",
+                          "sub_weapon": "splash_bomb"
+                        }
+                        ],
+                        "team_color": [
+                        190,
+                        81,
+                        72
+                        ],
+                        "team_count_events": [
+                        ],
+                        "version": "5.0.1"
+                      },
+                      "SequenceNumber": "66400000000000679556686",
+                      "SizeBytes": 6,
+                      "StreamViewType": "NEW_IMAGE"
+                  },
+                  "eventSourceARN": "arn:aws:dynamodb:ap-northeast-1:111:table/ssss/stream/aaa"
+                }
+              ]
+            },
+        },
+        "environmentVariables": {},
+        "runtime": "python3.9"
+      },
+    },
+    {
+      "name": "Python: 現在のファイル",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "train buki",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/train_buki.py",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "run_player",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/battle_analyzer/run_player.py",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "run_worker",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/battle_analyzer/run_worker.py",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "args": ["--device", "mps"]
+    },
+    {
+      "name": "run_youtube",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/battle_analyzer/run_youtube.py",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "run_analyzer_test_all",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/battle_analyzer/run_test.py",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "run_analyzer_test_one",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/battle_analyzer/tests/test_battle_rule_yagura_knockout.py",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "run_monitor_ytb",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/battle_analyzer/run_youtube_monitor.py",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "args": ["--user_id", "splatoon3_environment", "--max_workers", "1", "--reverse"]
+    }
+  ]
+}

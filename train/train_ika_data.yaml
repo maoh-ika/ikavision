@@ -1,0 +1,20 @@
+path: /home/maohika/work/ika/dataset/ika
+train: train
+val: val
+
+nc: 13
+names: [
+  'ika_hito',
+  'ika_ika',
+  'ika_ikaroll',
+  'ika_ikadash',
+  'ika_far',
+  'ika_player_name',
+  'ika_player_name_death',
+  'ika_crown_fes_1',
+  'ika_crown_fes_2',
+  'ika_crown_x_1',
+  'ika_hito_main',
+  'ika_hito_sub',
+  'ika_hito_sp'
+]

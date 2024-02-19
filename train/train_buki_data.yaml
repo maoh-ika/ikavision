@@ -1,0 +1,6 @@
+path: ./buki
+train: train
+val: val
+
+names: [
+]

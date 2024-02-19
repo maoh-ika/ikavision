@@ -1,0 +1,10 @@
+task: detect
+mode: train
+
+model: yolov8s.pt
+device: cuda
+batch: 100 
+epochs: 100
+imgsz: 320
+
+data: /home/maohika/work/ika/train/train_ocr_char_type_data.yaml

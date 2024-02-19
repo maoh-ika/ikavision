@@ -1,0 +1,15 @@
+{
+  "MLModelVersionStringKey" : "8.0.128",
+  "MLModelDescriptionKey" : "Ultralytics best model trained on train_ika_data.yaml",
+  "MLModelCreatorDefinedKey" : {
+    "stride" : "32",
+    "com.github.apple.coremltools.source" : "torch==2.0.1",
+    "com.github.apple.coremltools.version" : "6.3.0",
+    "task" : "detect",
+    "imgsz" : "[640, 640]",
+    "batch" : "1",
+    "names" : "{\"0\": \"ika_hito\", \"1\": \"ika_ika\", \"2\": \"ika_ikaroll\", \"3\": \"ika_ikadash\"}"
+  },
+  "MLModelAuthorKey" : "Ultralytics",
+  "MLModelLicenseKey" : "AGPL-3.0 https:\/\/ultralytics.com\/license"
+}

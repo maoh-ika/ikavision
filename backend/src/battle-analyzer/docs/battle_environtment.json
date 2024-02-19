@@ -1,0 +1,36 @@
+{
+    "environment_tag": "aa", // {title}_season {title}_daily
+    "splatoon_title": "splatoon3",
+    "season_name": "2023_drizzle",
+    "result_count": 10,
+    "start_timestamp": 10,
+    "end_timestamp": 10,
+    "battles": {
+        "nawabari": {
+            "gonzui": 1
+        },
+        "wakaba_shooter": 2
+    },
+    "buki_environments": {
+        "spla_shooter": {
+            "usage": { // 試合で使われた回数
+                "nawabari": {
+                    "gonzui": 1
+               }
+            },
+            "battles": { // 1つ以上使われたバトル数
+                "nawabari": {
+                    "gonzui": 1
+               }
+            },
+            "result": {
+                "nawabari": {
+                    "gonzui": {
+                        "win": 1,
+                        "lose": 2
+                    }
+                }
+            }
+        }
+    }
+}

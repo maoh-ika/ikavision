@@ -1,0 +1,10 @@
+task: detect
+mode: train
+
+model: yolov8n.pt
+device: cuda
+batch: 80
+epochs: 100
+imgsz: 640
+
+data: /home/maohika/work/ika/train/train_ikalamp_data.yaml

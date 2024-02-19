@@ -1,0 +1,120 @@
+
+html {
+  font-size: 62.5%;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
+}
+
+p {
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.cst-caption {
+  font-size: 1.2rem !important;
+}
+
+.cst-description {
+  word-wrap: break-word;
+  font-size: 2rem;
+}
+
+.cst-vertical-middle {
+  display: flex;
+  align-items: center;
+}
+
+.cst-rounded-boarder {
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 8px;
+  border-color: #0000002a
+}
+
+.cst-rounded-boarder-top {
+  border-style: solid;
+  border-width: 1px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-color:#0000002a
+}
+
+.cst-rounded-boarder-bottom {
+  border-style: solid;
+  border-width: 1px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-color: #0000002a
+}
+
+.cst-text-overflow {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cst-code-section {
+  background-color: #e7ecf0;
+}
+
+.cst-sticky-header {
+  max-height: 600px;
+}
+.cst-sticky-header thead tr th {
+  position: sticky;
+  z-index: 1;
+  top: 0
+}
+
+.cst-sticky-header thead tr:first-child th {
+  /* bg color is important for th; just specify one */
+  background-color: var(--q-secondary)
+}
+
+.cst-sticky-header thead tr:first-child th {
+  top: 0
+}
+
+.cst-sticky-header tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.cst-text-break {
+  white-space: break-spaces;
+}
+
+.cst-sticky-column {
+  max-width: 100%;
+}
+.cst-sticky-column th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background-color: #fafafa;
+}
+.cst-sticky-column th:nth-child(2) {
+  position: sticky;
+  left: 50px;
+  z-index: 3;
+  background-color: #fafafa;
+}
+.cst-sticky-column td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+.cst-sticky-column td:nth-child(2) {
+  position: sticky;
+  left: 50px;
+  z-index: 2;
+}
+.cst-sticky-column tr:nth-child(odd) td {
+  background-color: #ffffff;
+}
+.cst-sticky-column tr:nth-child(even) td {
+  background-color: #fafafa;
+}

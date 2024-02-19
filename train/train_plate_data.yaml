@@ -1,0 +1,11 @@
+path: /home/maohika/work/ika/dataset/plate
+train: train
+val: val
+
+nc: 4
+names: [
+  'plate_player_name',
+  'plate_player_id',
+  'plate_nickname',
+  'plate_badge'
+]

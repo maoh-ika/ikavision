@@ -1,0 +1,8 @@
+train: /Users/maohika/work/spla/dataset/map/train
+val: /Users/maohika/work/spla/dataset/map/valid
+test: /Users/maohika/work/spla/dataset/map/test
+
+#Classes
+nc: 1
+
+names: ['stage_border']

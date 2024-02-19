@@ -1,0 +1,11 @@
+task: detect
+mode: train
+
+model: yolov8n.pt
+device: cuda
+batch: 8
+epochs: 100
+imgsz: 640
+workers: 12
+
+data: /home/maohika/work/ika/train/train_indicator_data.yaml

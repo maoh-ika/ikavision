@@ -1,0 +1,56 @@
+{
+    "user_id": "aa",
+    "statistics_id": "aa",
+    "type": "master", // master, daily, user
+    "splatoon_title": "splatoon3",
+    "season_name": "2023_drizzle",
+    "result_count": 10,
+    "start_timestamp": 10,
+    "end_timestamp": 10,
+    "buki_performance": {
+        "spla_shooter": {
+            "result": {
+                "nawabari": {
+                    "gonzui": {
+                        "win": 1,
+                        "lose": 2
+                    }
+                }
+            },
+            "faceoff": {
+                "spla_shooter_collabo": {
+                    "nawabari": {
+                        "gonzui": {
+                            "kill_main": 1,
+                            "kill_sub": 1,
+                            "kill_sp": 1,
+                            "death_main": 1,
+                            "death_sub": 1,
+                            "death_sp": 1,
+                            "battle_count": 1
+                        }
+                    }
+                }
+            },
+            "actions": {
+                "nawabari": {
+                    "gonzui": {
+                        "sp_trigger": 1,
+                        "sp_spoil": 1,
+                        "ink_insufficient": 1
+                    }
+                }
+            },
+            "engagement": {
+                "nawabari": {
+                    "gonzui": {
+                        "sp_trigger": 1,
+                        "sp_spoil": 1,
+                        "ink_insufficient": 1
+                    }
+                }
+
+            }
+        }
+    }
+}

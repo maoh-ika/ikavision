@@ -1,0 +1,10 @@
+task: segment
+mode: train
+
+model: yolov8s-seg.pt
+device: cuda
+batch: 8
+epochs: 100
+imgsz: 128
+
+data: /Users/maohika/work/spla/train/train_ink_tank_data.yaml

@@ -1,0 +1,22 @@
+path: /home/maohika/work/ika/dataset/notification
+train: train
+val: val
+
+nc: 15
+names: [
+  'notification_kill',
+  'notification_death_reason',
+  'notification_player_gear',
+  'notification_player_plate',
+  'notification_ink_insufficient',
+  'notification_rule_nawabari',
+  'notification_rule_hoko',
+  'notification_rule_yagura',
+  'notification_rule_asari',
+  'notification_rule_area',
+  'notification_battle_start',
+  'notification_battle_end',
+  'notification_sp_fullcharge',
+  'notification_ink_refill',
+  'notification_rule_tricolor'
+]

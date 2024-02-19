@@ -1,0 +1,12 @@
+path: /home/maohika/work/ika/dataset/ikalamp
+train: train
+val: val
+
+nc: 5
+names: [
+  'ikalamp_live',
+  'ikalamp_death',
+  'ikalamp_sp',
+  'ikalamp_drop',
+  'ikalamp_timer'
+]
