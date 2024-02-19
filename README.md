@@ -1,6 +1,10 @@
-# ikavision
+# IkaVision
 スプラトゥーン3のバトル動画解析システムです。
 
+## Webサイト
+[IkaVision試験版](https://ikavision.ikaruga.app/)
+
+## システム構成
 IkaVisionは、大きく以下の4つのコンポーネントで構成されています。  
 <br/>
 **1. バトル動画配信モニター**
