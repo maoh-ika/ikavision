@@ -17,3 +17,5 @@ yolov8*
 *.debug
 *.cache
 *template.*
+*.bkp
+*.dtmp

@@ -55,7 +55,6 @@
         @click="goUsageRuleDetail"
       />
     </div>
-      
     <q-separator class="full-width q-my-md"/>
     
     <div class="full-width column">
