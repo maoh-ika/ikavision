@@ -118,7 +118,18 @@ cls_buki_map = {
     'sblast91': MainWeapon.SBLAST91,
     'spla_maneuver_collabo': MainWeapon.SPLA_MANEUVER_COLLABO,
     'spy_gadget_solare': MainWeapon.SPY_GADGET_SOLARE,
-    'vincent_nouveau': MainWeapon.VINCENT_NOUVEAU
+    'vincent_nouveau': MainWeapon.VINCENT_NOUVEAU,
+    'octa_shooter_replica': MainWeapon.OCTA_SHOOTER_REPLICA,
+    'order_blaster_replica': MainWeapon.ORDER_BLASTER_REPLICA,
+    'order_brush_replica': MainWeapon.ORDER_BRUSH_REPLICA,
+    'order_charger_replica': MainWeapon.ORDER_CHARGER_REPLICA,
+    'order_maneuver_replica': MainWeapon.ORDER_MANEUVER_REPLICA,
+    'order_roller_replica': MainWeapon.ORDER_ROLLER_REPLICA,
+    'order_shelter_replica': MainWeapon.ORDER_SHELTER_REPLICA,
+    'order_shooter_replica': MainWeapon.ORDER_SHOOTER_REPLICA,
+    'order_spinner_replica': MainWeapon.ORDER_SPINNER_REPLICA,
+    'order_stringer_replica': MainWeapon.ORDER_STRINGER_REPLICA,
+    'order_wiper_replica': MainWeapon.ORDER_WIPER_REPLICA
 }
 
 @dataclass

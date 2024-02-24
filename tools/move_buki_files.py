@@ -124,6 +124,6 @@ label_list = [
     'order_wiper_replica'
 ]
 
-src_dir = '/Users/maohika/Downloads/buki_data/{label}'
-dst_dir = '/Volume/share/orig/{label}/ikalamp'
+src_dir = 'C:/work/share/buki_data/{label}'
+dst_dir = '//wsl.localhost/Ubuntu-22.04/mnt/wsl/PHYSICALDRIVE1/splatoon3/dataset/buki/orig/{label}/ikalamp'
 move_files(label_list, src_dir, dst_dir, copy=True, postfix='ikalamp')

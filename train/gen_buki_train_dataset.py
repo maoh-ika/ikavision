@@ -1,7 +1,7 @@
 from gen_train_dataset import gen_train_dataset
 
 gen_train_dataset(
-    src_dir='/media/maohika/1c0ddf00-ee1d-46f9-b3bb-e958e891243f/splatoon3/dataset/buki/orig/',
+    src_dir='//wsl.localhost/Ubuntu-22.04/mnt/wsl/PHYSICALDRIVE1/splatoon3/dataset/buki/orig/',
     train_dir='./dataset/buki/train/',
     val_dir='./dataset/buki/val/',
     train_ratio=0.8,
