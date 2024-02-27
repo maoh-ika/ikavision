@@ -8,7 +8,8 @@ import queue
 import numpy as np
 from ultralytics import YOLO
 from ultralytics.utils.plotting import Annotator, colors
-from prediction.ikalamp_detection_process import make_frame_result as make_ikalamp_frame, make_detection_completed as make_ikalamp_result,  IkalampDetectionFrame
+from prediction.ikalamp_detection_process import make_frame_result as make_ikalamp_frame, make_detection_completed as make_ikalamp_result, IkalampDetectionFrame
+from prediction.ika_player_detection_process import make_frame_result as make_ika_frame, make_detection_completed as make_ika_result, IkaPlayerDetectionFrame 
 from prediction.prediction_process import run_prediction, preprocess, postprocess
 
 load_dotenv()
@@ -26,6 +27,12 @@ def draw_ikalamps(ikalamp_frame: IkalampDetectionFrame, annotator: Annotator):
             draw_bbox(lamp.xyxy, lamp.state.name, lamp.state.value, lamp.conf, annotator)
     if ikalamp_frame.timer is not None:
         draw_bbox(ikalamp_frame.timer.xyxy, ikalamp_frame.timer.state.name, ikalamp_frame.timer.state.value, ikalamp_frame.timer.conf, annotator)
+
+def draw_positions(self, ika_frame: IkaPlayerDetectionFrame, annotator: Annotator):
+    for pos in ika_frame.positions:
+        self.draw_bbox(pos.xyxy, f'{pos.form.name}_{pos.track_id}', pos.form.value, pos.conf, annotator)
+    for name in ika_frame.names:
+        self.draw_bbox(name.xyxy, 'name', name.cls, name.conf, annotator)
 
 @dataclass
 class InputFrame:
@@ -90,6 +97,10 @@ class DetectionThread(PredictionTread):
         preds = self.model.model(batch)
         return postprocess(preds, batch.shape[2:], images[0].shape, 0.25, 0.1, 100)
 
+class TracingThread(PredictionTread):
+    def _predict(self, images: list[np.ndarray]):
+        return self.model.track(images, persist=True, conf=0.1, iou=0.25, verbose=False, tracker='bytetrack.yaml')
+
 if __name__ == '__main__':
     
     cap = cv2.VideoCapture(0) # この環境ではキャプチャボードのデバイス番号は0
@@ -104,10 +115,10 @@ if __name__ == '__main__':
     cv2.resizeWindow(win_name, 1920, 1080)
     
     frame_interval = 3
+    device = torch.device('cuda')
 
     # イカランプ検出モデル
     ikalamp_model_path = os.environ.get('IKALAMP_MODEL_PATH')
-    device = torch.device('cuda')
     ikalamp_model = YOLO(ikalamp_model_path)
     ikalamp_model.to(device)
     ikalamp_result_queue = queue.Queue()
@@ -121,9 +132,25 @@ if __name__ == '__main__':
     )
     ikalamp_thread.start()
 
+    # イカ検出モデル
+    ika_model_path = os.environ.get('IKA_PLAYER_MODEL_PATH')
+    ika_model = YOLO(ikalamp_model_path)
+    ika_model.to(device)
+    ika_result_queue = queue.Queue()
+    ika_thread = TracingThread(
+        'ika',
+        ika_model,
+        ika_result_queue,
+        frame_interval,
+        make_ika_frame,
+        make_ika_result
+    )
+    ika_thread.start()
+
+    # process stream
+
     batch_size = 1
     frame_number = 0
-    input_batch = []
     while True:
         ret = cap.grab()
         if frame_number % frame_interval != 0:
@@ -134,19 +161,25 @@ if __name__ == '__main__':
             print('failed to read frame')
             break
             
+        input_batch = []
         input_batch.append(InputFrame(frame, frame_number))
 
-        if len(input_batch) == batch_size:
-            ikalamp_thread.add_frames(input_batch)
-            ikalamp_result = ikalamp_result_queue.get()
+        ikalamp_thread.add_frames(input_batch)
+        ikalamp_result = ikalamp_result_queue.get()
 
-            # ゲーム画面にイカランプの枠線を書き込み
-            ikalamp_frame = ikalamp_result.frames[0]
-            ikalamp_annotator = Annotator(frame, line_width=1, example=str(ikalamp_model.model.names))
-            draw_ikalamps(ikalamp_frame, ikalamp_annotator)
-            input_batch = []
-            
-            cv2.imshow(win_name, frame)
+        ika_thread.add_frames(input_batch)
+        ika_result = ika_result_queue.get()
+
+        # ゲーム画面にイカランプの枠線を書き込み
+        ikalamp_frame = ikalamp_result.frames[0]
+        ikalamp_annotator = Annotator(frame, line_width=1, example=str(ikalamp_model.model.names))
+        draw_ikalamps(ikalamp_frame, ikalamp_annotator)
+        
+        ika_frame = ika_result.frames[0]
+        ika_annotator = Annotator(frame, line_width=1, example=str(ika_model.model.names))
+        draw_positions(ika_frame, ika_annotator)
+        
+        cv2.imshow(win_name, frame)
 
         if cv2.waitKey(1) & 0xff == ord('q'):
             break
