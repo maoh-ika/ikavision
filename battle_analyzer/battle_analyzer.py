@@ -354,10 +354,8 @@ class BattleAnalyzer:
 
         self.logger.info(f'player position analysis process started.')
         processing_time = time.time()
-        player_position_analyzer = PlayerPositionFrameAnalyzer(self.preprocess_params.battle_movie_path)
-        player_position_analyzer.analyze(self.ika_player_result)
-        player_position_analyzer.join()
-        position_analysis_result = player_position_analyzer.result
+        player_position_analyzer = PlayerPositionFrameAnalyzer()
+        position_analysis_result = player_position_analyzer.analyze(self.ika_player_result)
         self.logger.info(f'player position process completed. processing time: {time.time() - processing_time}')
         if position_analysis_result is None:
             raise InternalError('player position analysis failed')
