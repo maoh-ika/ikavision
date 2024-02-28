@@ -28,11 +28,11 @@ def draw_ikalamps(ikalamp_frame: IkalampDetectionFrame, annotator: Annotator):
     if ikalamp_frame.timer is not None:
         draw_bbox(ikalamp_frame.timer.xyxy, ikalamp_frame.timer.state.name, ikalamp_frame.timer.state.value, ikalamp_frame.timer.conf, annotator)
 
-def draw_positions(self, ika_frame: IkaPlayerDetectionFrame, annotator: Annotator):
+def draw_positions(ika_frame: IkaPlayerDetectionFrame, annotator: Annotator):
     for pos in ika_frame.positions:
-        self.draw_bbox(pos.xyxy, f'{pos.form.name}_{pos.track_id}', pos.form.value, pos.conf, annotator)
+        draw_bbox(pos.xyxy, f'{pos.form.name}_{pos.track_id}', pos.form.value, pos.conf, annotator)
     for name in ika_frame.names:
-        self.draw_bbox(name.xyxy, 'name', name.cls, name.conf, annotator)
+        draw_bbox(name.xyxy, 'name', name.cls, name.conf, annotator)
 
 @dataclass
 class InputFrame:
@@ -134,7 +134,7 @@ if __name__ == '__main__':
 
     # イカ検出モデル
     ika_model_path = os.environ.get('IKA_PLAYER_MODEL_PATH')
-    ika_model = YOLO(ikalamp_model_path)
+    ika_model = YOLO(ika_model_path)
     ika_model.to(device)
     ika_result_queue = queue.Queue()
     ika_thread = TracingThread(
