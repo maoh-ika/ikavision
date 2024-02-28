@@ -9,7 +9,7 @@ import numpy as np
 from ultralytics import YOLO
 from ultralytics.utils.plotting import Annotator, colors
 from prediction.ikalamp_detection_process import make_frame_result as make_ikalamp_frame, make_detection_completed as make_ikalamp_result, IkalampDetectionFrame
-from prediction.ika_player_detection_process import make_frame_result as make_ika_frame, make_detection_completed as make_ika_result, IkaPlayerDetectionFrame 
+from prediction.ika_player_detection_process import make_frame_result as make_ika_frame, make_detection_completed as make_ika_result, IkaPlayerDetectionFrame
 from prediction.prediction_process import run_prediction, preprocess, postprocess
 
 load_dotenv()
@@ -27,6 +27,12 @@ def draw_ikalamps(ikalamp_frame: IkalampDetectionFrame, annotator: Annotator):
             draw_bbox(lamp.xyxy, lamp.state.name, lamp.state.value, lamp.conf, annotator)
     if ikalamp_frame.timer is not None:
         draw_bbox(ikalamp_frame.timer.xyxy, ikalamp_frame.timer.state.name, ikalamp_frame.timer.state.value, ikalamp_frame.timer.conf, annotator)
+    
+def draw_ika(ika_frame: IkaPlayerDetectionFrame, annotator: Annotator):
+    for pos in ika_frame.positions:
+        draw_bbox(pos.xyxy, f'{pos.form.name}_{pos.track_id}', pos.form.value, pos.conf, annotator)
+    for name in ika_frame.names:
+        draw_bbox(name.xyxy, 'name', name.cls, name.conf, annotator)
 
 def draw_positions(ika_frame: IkaPlayerDetectionFrame, annotator: Annotator):
     for pos in ika_frame.positions:
@@ -39,6 +45,7 @@ class InputFrame:
     frame: np.ndarray
     frame_number: int
 
+# AIモデルによる推論実行のスレッド
 class PredictionTread(threading.Thread):
     def __init__(
         self,
@@ -90,6 +97,7 @@ class PredictionTread(threading.Thread):
     def _predict(self, frames: list[InputFrame]):
         raise Exception('no impl')
     
+# オブジェクト検知モデル実行のスレッド
 class DetectionThread(PredictionTread):
     def _predict(self, images: list[np.ndarray]):
         tensors = [preprocess(img, self.model.overrides['imgsz'], self.model.device, to_4d=False) for img in images]
@@ -97,7 +105,8 @@ class DetectionThread(PredictionTread):
         preds = self.model.model(batch)
         return postprocess(preds, batch.shape[2:], images[0].shape, 0.25, 0.1, 100)
 
-class TracingThread(PredictionTread):
+# オブジェクトトラッキングモデル実行のスレッド
+class TrackingThread(PredictionTread):
     def _predict(self, images: list[np.ndarray]):
         return self.model.track(images, persist=True, conf=0.1, iou=0.25, verbose=False, tracker='bytetrack.yaml')
 
@@ -131,13 +140,28 @@ if __name__ == '__main__':
         make_ikalamp_result
     )
     ikalamp_thread.start()
+    
+    # イカタコ検出モデル
+    ika_model_path = os.environ.get('IKA_PLAYER_MODEL_PATH')
+    ika_model = YOLO(ika_model_path)
+    ika_model.to(device)
+    ika_result_queue = queue.Queue()
+    ika_thread = TrackingThread(
+        'ika',
+        ika_model,
+        ika_result_queue,
+        frame_interval,
+        make_ika_frame,
+        make_ika_result
+    )
+    ika_thread.start()
 
     # イカ検出モデル
     ika_model_path = os.environ.get('IKA_PLAYER_MODEL_PATH')
     ika_model = YOLO(ika_model_path)
     ika_model.to(device)
     ika_result_queue = queue.Queue()
-    ika_thread = TracingThread(
+    ika_thread = TrackingThread(
         'ika',
         ika_model,
         ika_result_queue,
@@ -164,10 +188,14 @@ if __name__ == '__main__':
         input_batch = []
         input_batch.append(InputFrame(frame, frame_number))
 
+        # イカランプ検出スレッド実行 
         ikalamp_thread.add_frames(input_batch)
-        ikalamp_result = ikalamp_result_queue.get()
-
+        
+        # イカタコ検出スレッド実行 
         ika_thread.add_frames(input_batch)
+
+        # 推論スレッドの処理完了待ち 
+        ikalamp_result = ikalamp_result_queue.get()
         ika_result = ika_result_queue.get()
 
         # ゲーム画面にイカランプの枠線を書き込み
@@ -175,9 +203,10 @@ if __name__ == '__main__':
         ikalamp_annotator = Annotator(frame, line_width=1, example=str(ikalamp_model.model.names))
         draw_ikalamps(ikalamp_frame, ikalamp_annotator)
         
+        # ゲーム画面にイカタコの枠線を書き込み
         ika_frame = ika_result.frames[0]
         ika_annotator = Annotator(frame, line_width=1, example=str(ika_model.model.names))
-        draw_positions(ika_frame, ika_annotator)
+        draw_ika(ika_frame, ika_annotator)
         
         cv2.imshow(win_name, frame)
 
