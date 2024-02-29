@@ -11,6 +11,8 @@ from ultralytics.utils.plotting import Annotator, colors
 from prediction.ikalamp_detection_process import make_frame_result as make_ikalamp_frame, make_detection_completed as make_ikalamp_result, IkalampDetectionFrame
 from prediction.ika_player_detection_process import make_frame_result as make_ika_frame, make_detection_completed as make_ika_result, IkaPlayerDetectionFrame
 from prediction.prediction_process import run_prediction, preprocess, postprocess
+from prediction.player_position_frame_analyzer import PlayerPositionFrameAnalyzer
+from models.ika_player import IkaPlayerPosition
 
 load_dotenv()
 
@@ -34,11 +36,10 @@ def draw_ika(ika_frame: IkaPlayerDetectionFrame, annotator: Annotator):
     for name in ika_frame.names:
         draw_bbox(name.xyxy, 'name', name.cls, name.conf, annotator)
 
-def draw_positions(ika_frame: IkaPlayerDetectionFrame, annotator: Annotator):
-    for pos in ika_frame.positions:
-        draw_bbox(pos.xyxy, f'{pos.form.name}_{pos.track_id}', pos.form.value, pos.conf, annotator)
-    for name in ika_frame.names:
-        draw_bbox(name.xyxy, 'name', name.cls, name.conf, annotator)
+def draw_main_player(img: np.ndarray, main_player_position: IkaPlayerPosition):
+    if main_player_position:
+        xyxy = main_player_position.xyxy
+        cv2.rectangle(img, (xyxy[0], xyxy[1]), (xyxy[2], xyxy[3]), (255, 0, 255), 3)
 
 @dataclass
 class InputFrame:
@@ -156,20 +157,8 @@ if __name__ == '__main__':
     )
     ika_thread.start()
 
-    # イカ検出モデル
-    ika_model_path = os.environ.get('IKA_PLAYER_MODEL_PATH')
-    ika_model = YOLO(ika_model_path)
-    ika_model.to(device)
-    ika_result_queue = queue.Queue()
-    ika_thread = TrackingThread(
-        'ika',
-        ika_model,
-        ika_result_queue,
-        frame_interval,
-        make_ika_frame,
-        make_ika_result
-    )
-    ika_thread.start()
+    # 自キャラの位置情報の識別器
+    player_position_analyzer = PlayerPositionFrameAnalyzer()
 
     # process stream
 
@@ -198,6 +187,10 @@ if __name__ == '__main__':
         ikalamp_result = ikalamp_result_queue.get()
         ika_result = ika_result_queue.get()
 
+        # 操作キャラの位置を特定
+        # ストリームは1フレームごとに処理するため動画でのバッチ処理に比べて精度は落ちる
+        player_position_result = player_position_analyzer.analyze(ika_result)
+
         # ゲーム画面にイカランプの枠線を書き込み
         ikalamp_frame = ikalamp_result.frames[0]
         ikalamp_annotator = Annotator(frame, line_width=1, example=str(ikalamp_model.model.names))
@@ -207,6 +200,10 @@ if __name__ == '__main__':
         ika_frame = ika_result.frames[0]
         ika_annotator = Annotator(frame, line_width=1, example=str(ika_model.model.names))
         draw_ika(ika_frame, ika_annotator)
+
+        # 自キャラの枠線を太線で協調表示
+        if len(player_position_result.frames) == 1:
+            draw_main_player(frame, player_position_result.frames[0].main_player_position)
         
         cv2.imshow(win_name, frame)
 
