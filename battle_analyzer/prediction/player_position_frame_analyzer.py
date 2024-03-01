@@ -8,6 +8,7 @@ from models.detected_item import TrackableItem
 @dataclass
 class PlayerPositionAnalysisFrame(Frame):
     main_player_position: IkaPlayerPosition
+    frame: int
     
     @classmethod
     def from_json(cls, j):
