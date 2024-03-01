@@ -22,7 +22,7 @@ class IkaPlayerDetectionFrame(Frame):
 
 @dataclass
 class IkaPlayerDetectionResult(PredictionResultBase):
-    frames: [IkaPlayerDetectionFrame]
+    frames: list[IkaPlayerDetectionFrame]
 
     @classmethod
     def from_json(cls, j):
@@ -83,13 +83,13 @@ def make_positions(pred) -> (list[IkaPlayerPosition], list[TrackableItem]):
 
     return positions, names
 
-def make_frame_result(pred, frame: int, _) -> IkaPlayerDetectionFrame:
+def make_frame_result(pred, frame: int, img) -> IkaPlayerDetectionFrame:
     positions, names = make_positions(pred)
     return IkaPlayerDetectionFrame(
         positions=positions,
         names=names,
         frame=frame,
-        image=None
+        image=img
     )
     
 def make_detection_completed(

@@ -7,8 +7,8 @@ from models.ikalamp import Ikalamp, IkalampTimer, BattleSide, IkalampState, Ikal
 
 @dataclass
 class IkalampDetectionFrame(Frame):
-    team: [Ikalamp]
-    enemy: [Ikalamp]
+    team: list[Ikalamp]
+    enemy: list[Ikalamp]
     timer: IkalampTimer
     
     @classmethod
@@ -23,7 +23,7 @@ class IkalampDetectionFrame(Frame):
 
 @dataclass
 class IkalampDetectionResult(PredictionResultBase):
-    frames: [IkalampDetectionFrame]
+    frames: list[IkalampDetectionFrame]
 
     @classmethod
     def from_json(cls, j):
@@ -81,7 +81,7 @@ def make_frame_result(pred, frame: int, img) -> IkalampDetectionFrame:
             enemy=lamps[1],
             timer=lamps[2],
             frame=frame,
-            image=None
+            image=img
         )
     else:
         return IkalampDetectionFrame(
@@ -89,7 +89,7 @@ def make_frame_result(pred, frame: int, img) -> IkalampDetectionFrame:
             enemy=None,
             timer=None,
             frame=frame,
-            image=None
+            image=img
         )
     
 def make_detection_completed(
@@ -99,7 +99,7 @@ def make_detection_completed(
     start_frame: int,
     end_frame: int,
     frame_interval: int,
-    frame_results: [IkalampDetectionFrame],
+    frame_results: list[IkalampDetectionFrame],
     processing_time: int
    ) -> IkalampDetectionResult:
     return IkalampDetectionResult(
