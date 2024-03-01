@@ -50,7 +50,7 @@ class PlayerPositionFrameAnalyzer:
                     tracking_positions[pos.track_id] = [(pos, frame, frame.names)]
 
         # トラッキングIDごとに、位置情報が自キャラのものか判定
-        for pos_items in sorted(tracking_positions.values(), key=lambda items: items[0][1]): # フレーム番号で昇順ソート
+        for pos_items in sorted(tracking_positions.values(), key=lambda items: items[0][1].frame): # フレーム番号で昇順ソート
             if self._is_main_player_position(pos_items):
                 for pos_item in pos_items:
                     pos_frames.append(PlayerPositionAnalysisFrame(pos_item[1].frame, pos_item[1].image, pos_item[0]))

@@ -12,6 +12,7 @@ from prediction.ikalamp_detection_process import make_frame_result as make_ikala
 from prediction.ika_player_detection_process import make_frame_result as make_ika_frame, make_detection_completed as make_ika_result, IkaPlayerDetectionFrame, IkaPlayerDetectionResult
 from prediction.prediction_process import run_prediction, preprocess, postprocess
 from prediction.player_position_frame_analyzer import PlayerPositionFrameAnalyzer, PlayerPositionAnalysisResult
+from prediction.ink_tank_frame_analyzer import InkTankFrameAnalyzer, InkTankAnalysisResult, InkTankAnalysisFrame
 from models.ika_player import IkaPlayerPosition
 
 load_dotenv()
@@ -20,7 +21,8 @@ load_dotenv()
 class State:
     ikalamp: IkalampDetectionResult = None
     ika: IkaPlayerDetectionResult = None
-    main_player: PlayerPositionAnalysisResult = None
+    main_player_position: PlayerPositionAnalysisResult = None
+    ink_tank = InkTankAnalysisResult = None
 
 @dataclass
 class InputFrame:
@@ -51,6 +53,42 @@ def draw_main_player(img: np.ndarray, main_player_position: IkaPlayerPosition):
     if main_player_position:
         xyxy = main_player_position.xyxy
         cv2.rectangle(img, (xyxy[0], xyxy[1]), (xyxy[2], xyxy[3]), (255, 0, 255), 3)
+
+def draw_ink_tank(img: np.ndarray, ink_tank: InkTankAnalysisFrame):
+    if ink_tank.main_player_ink:
+        level_x = 0
+        level_y = 0
+        if ink_tank.main_player_ink.consumed:
+            img[ink_tank.main_player_ink.consumed.mask[:, 1], ink_tank.main_player_ink.consumed.mask[:, 0]] = (255,0,0)
+            level_x = max(level_x, ink_tank.main_player_ink.consumed.xyxy[2])
+            level_y = max(level_y, ink_tank.main_player_ink.consumed.xyxy[3])
+        if ink_tank.main_player_ink.remaining:
+            img[ink_tank.main_player_ink.remaining.mask[:, 1], ink_tank.main_player_ink.remaining.mask[:, 0]] = (0,0,255)
+            level_x = max(level_x, ink_tank.main_player_ink.remaining.xyxy[2])
+            level_y = max(level_y, ink_tank.main_player_ink.remaining.xyxy[3])
+        level_text = f'{round(ink_tank.main_player_ink.ink_level * 100)}%'
+        cv2.putText(img, level_text, (level_x, level_y), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255), 4)
+
+def update_frame(state: State, frame: np.ndarray):
+    # ゲーム画面にイカランプの枠線を書き込み
+    if state.ikalamp:
+        ikalamp_frame = state.ikalamp.frames[0]
+        ikalamp_annotator = Annotator(frame, line_width=1)
+        draw_ikalamps(ikalamp_frame, ikalamp_annotator)
+    
+    # ゲーム画面にイカタコの枠線を書き込み
+    if state.ika:
+        ika_frame = state.ika.frames[0]
+        ika_annotator = Annotator(frame, line_width=1)
+        draw_ika(ika_frame, ika_annotator)
+
+    # 自キャラの枠線を太線で協調表示
+    if state.main_player_position and len(state.main_player_position.frames) == 1:
+        draw_main_player(frame, state.main_player_position.frames[0].main_player_position)
+
+    # インク残量表示
+    if state.ink_tank and len(state.ink_tank.frames) == 1:
+        draw_ink_tank(frame, state.ink_tank.frames[0])
 
 # AIモデルによる推論実行のプロセス
 class PredictionProcess(multiprocessing.Process):
@@ -114,6 +152,35 @@ class TrackingProcess(PredictionProcess):
     def _predict(self, model: YOLO, images: list[np.ndarray]):
         return model.track(images, persist=True, conf=0.1, iou=0.25, verbose=False, tracker='bytetrack.yaml')
 
+# インク残量推定モデル実行プロセス
+class InkTankPredictionProcess(multiprocessing.Process):
+    def __init__(self,
+        model_path: str,
+        device: str,
+        request_queue: multiprocessing.Queue,
+        result_queue: multiprocessing.Queue
+    ):
+        super().__init__(name='ink_tank')
+        self.model_path = model_path
+        self.device = device
+        self.request_queue = request_queue
+        self.result_queue = result_queue
+        self.shutdown_requested = False
+
+    def run(self):
+        ink_tank_analyzer = InkTankFrameAnalyzer(
+            battle_movie_path=None,
+            ink_tank_model_path=self.model_path,
+            device=self.device
+        )
+
+        while not self.shutdown_requested:
+            main_player_position = self.request_queue.get()
+            # InkTankFrameAnalyzerをスレッドを使わず実行させるため、runを直接コールする
+            ink_tank_analyzer.player_position_result = main_player_position
+            ink_tank_analyzer.run()
+            self.result_queue.put(ink_tank_analyzer.result)
+
 class ResultMonitorThread(threading.Thread):
     def __init__(self, state: State, result_queue: multiprocessing.Queue, update_func):
         super().__init__()
@@ -126,22 +193,21 @@ class ResultMonitorThread(threading.Thread):
             result = self.result_queue.get()
             self.update_func(self.state, result)
 
-def update_frame(state: State, frame: np.ndarray):
-    # ゲーム画面にイカランプの枠線を書き込み
-    if state.ikalamp:
-        ikalamp_frame = state.ikalamp.frames[0]
-        ikalamp_annotator = Annotator(frame, line_width=1)
-        draw_ikalamps(ikalamp_frame, ikalamp_annotator)
-    
-    # ゲーム画面にイカタコの枠線を書き込み
-    if state.ika:
-        ika_frame = state.ika.frames[0]
-        ika_annotator = Annotator(frame, line_width=1)
-        draw_ika(ika_frame, ika_annotator)
+class IkaResultMonitor(ResultMonitorThread):
+    def __init__(self,
+        state: State,
+        result_queue: multiprocessing.Queue,
+        ink_tank_request_queue: multiprocessing.Queue
+    ):
+        super().__init__(state, result_queue, self.update)
+        self.ink_tank_request_queue = ink_tank_request_queue
 
-    # 自キャラの枠線を太線で協調表示
-    if state.main_player and len(state.main_player.frames) == 1:
-        draw_main_player(frame, state.main_player.frames[0].main_player_position)
+    def update(self, state: State, ika_result: IkaPlayerDetectionResult):
+        state.ika = ika_result
+        # 操作キャラの位置を特定
+        # ストリームは1フレームごとに処理するため動画でのバッチ処理に比べて精度は落ちる
+        state.main_player_position = player_position_analyzer.analyze(state.ika)
+        self.ink_tank_request_queue.put(state.main_player_position)
 
 if __name__ == '__main__':
     
@@ -159,7 +225,7 @@ if __name__ == '__main__':
     cv2.resizeWindow(win_name, 1920, 1080)
     
     frame_interval = frame_rate // 3
-    device = torch.device('cuda')
+    device = os.environ.get('MODEL_DEVICE')
     
     state = State()
 
@@ -167,7 +233,7 @@ if __name__ == '__main__':
     ikalamp_model_path = os.environ.get('IKALAMP_MODEL_PATH')
     ikalamp_request_queue = multiprocessing.Queue()
     ikalamp_result_queue = multiprocessing.Queue()
-    ikalamp_thread = DetectionProcess(
+    ikalamp_process = DetectionProcess(
         'ikalamp',
         ikalamp_model_path,
         ikalamp_request_queue,
@@ -176,19 +242,13 @@ if __name__ == '__main__':
         make_ikalamp_frame,
         make_ikalamp_result
     )
-    ikalamp_thread.start()
+    ikalamp_process.start()
 
-    def _updateIkalamp(state: State, ikalamp_result: IkalampDetectionResult):
-        state.ikalamp = ikalamp_result
-
-    ikalamp_update_thread = ResultMonitorThread(state, ikalamp_result_queue, update_func=_updateIkalamp)
-    ikalamp_update_thread.start()
-    
     # イカタコ検出モデル
     ika_model_path = os.environ.get('IKA_PLAYER_MODEL_PATH')
     ika_request_queue = multiprocessing.Queue()
     ika_result_queue = multiprocessing.Queue()
-    ika_thread = TrackingProcess(
+    ika_process = TrackingProcess(
         'ika',
         ika_model_path,
         ika_request_queue,
@@ -197,19 +257,38 @@ if __name__ == '__main__':
         make_ika_frame,
         make_ika_result
     )
-    ika_thread.start()
-    
-    def _updateIka(state: State, ika_result: IkaPlayerDetectionResult):
-        state.ika = ika_result
-        # 操作キャラの位置を特定
-        # ストリームは1フレームごとに処理するため動画でのバッチ処理に比べて精度は落ちる
-        state.main_player = player_position_analyzer.analyze(state.ika)
-    
-    ika_update_thread = ResultMonitorThread(state, ika_result_queue, update_func=_updateIka)
-    ika_update_thread.start()
+    ika_process.start()
 
+    # インク残量推定モデル
+    ink_tank_model_path = os.environ.get('INK_TANK_MODEL_PATH')
+    ink_tank_request_queue = multiprocessing.Queue()
+    ink_tank_result_queue = multiprocessing.Queue()
+    ink_tank_process = InkTankPredictionProcess(
+        ink_tank_model_path,
+        device,
+        ink_tank_request_queue,
+        ink_tank_result_queue
+    )
+    ink_tank_process.start()
+    
     # 自キャラの位置情報の識別器
     player_position_analyzer = PlayerPositionFrameAnalyzer()
+
+    # イカランプ検出の完了監視
+    def _updateIkalamp(state: State, ikalamp_result: IkalampDetectionResult):
+        state.ikalamp = ikalamp_result
+    ikalamp_update_thread = ResultMonitorThread(state, ikalamp_result_queue, update_func=_updateIkalamp)
+    ikalamp_update_thread.start()
+    
+    # イカタコ位置検出の完了監視
+    ika_update_thread = IkaResultMonitor(state, ika_result_queue, ink_tank_request_queue)
+    ika_update_thread.start()
+
+    # インク残量推定の完了監視
+    def _update_ink_tank(state: State, ink_tank_result: InkTankAnalysisResult):
+        state.ink_tank = ink_tank_result
+    ink_tank_update_thread = ResultMonitorThread(state, ink_tank_result_queue, _update_ink_tank)
+    ink_tank_update_thread.start()
 
     # process stream
 

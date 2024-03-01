@@ -45,9 +45,8 @@ def hstack(img: np.ndarray=None, items: list[DetectedItem]=None, images: list[np
     return np.hstack(list(map(lambda img: cv2.resize(img, (max_h, max_w)), item_imgs)))
 
 def bounding_box(mask: np.ndarray):
-    non_zero_points = np.transpose(np.nonzero(mask))
-    min_x, min_y = np.min(non_zero_points, axis=0)
-    max_x, max_y = np.max(non_zero_points, axis=0)
+    min_x, min_y = np.min(mask, axis=0)
+    max_x, max_y = np.max(mask, axis=0)
     return [min_x, min_y, max_x, max_y]
 
 class MovieReader:
