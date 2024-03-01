@@ -1,15 +1,13 @@
 from dataclasses import dataclass
-from threading import Thread
 from prediction.ika_player_detection_process import IkaPlayerDetectionResult
+from prediction.frame import Frame
 from utils import class_to_dict
 from models.ika_player import IkaPlayerPosition, IkaPlayerForm
 from models.detected_item import TrackableItem
-from error import InternalError
 
 @dataclass
-class PlayerPositionAnalysisFrame:
+class PlayerPositionAnalysisFrame(Frame):
     main_player_position: IkaPlayerPosition
-    frame: int
     
     @classmethod
     def from_json(cls, j):
@@ -37,7 +35,7 @@ class PlayerPositionFrameAnalyzer:
         # 自キャラが検出されたフレームリスト
         pos_frames = []
         # トラッキングIDごとにグループ化したキャラクタ位置情報リスト
-        # リストの要素は(位置情報、フレーム番号、フレーム画像内のプレイヤー名オブジェクトリスト)のタプル
+        # リストの要素は(位置情報、フレーム、フレーム画像内のプレイヤー名オブジェクトリスト)のタプル
         tracking_positions = {}
         for frame in ika_player_result.get_sliced_frames():
             for pos in frame.positions:
@@ -45,23 +43,23 @@ class PlayerPositionFrameAnalyzer:
                     continue
                 if pos.track_id in tracking_positions:
                     # coutinue to track
-                    tracking_positions[pos.track_id].append((pos, frame.frame, frame.names))
+                    tracking_positions[pos.track_id].append((pos, frame, frame.names))
                 else:
                     # found new tracking item
-                    tracking_positions[pos.track_id] = [(pos, frame.frame, frame.names)]
+                    tracking_positions[pos.track_id] = [(pos, frame, frame.names)]
 
         # トラッキングIDごとに、位置情報が自キャラのものか判定
         for pos_items in sorted(tracking_positions.values(), key=lambda items: items[0][1]): # フレーム番号で昇順ソート
             if self._is_main_player_position(pos_items):
                 for pos_item in pos_items:
-                    pos_frames.append(PlayerPositionAnalysisFrame(pos_item[0], pos_item[1]))
+                    pos_frames.append(PlayerPositionAnalysisFrame(pos_item[1].frame, pos_item[1].image, pos_item[0]))
 
         # 自キャラが検出されたフレームだけを、自キャラの位置情報と一緒に返す
         pos_frames.sort(key=lambda frame: frame.frame)
         return PlayerPositionAnalysisResult(frames=pos_frames)
 
     # 位置情報が自キャラのものか判定 
-    def _is_main_player_position(self, items: list[(IkaPlayerPosition, int, list[TrackableItem])]) -> bool:
+    def _is_main_player_position(self, items: list[(IkaPlayerPosition, Frame, list[TrackableItem])]) -> bool:
         has_name_frame_count = 0
         for item in items:
             pos, names = item[0], item[2]

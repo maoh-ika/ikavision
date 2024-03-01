@@ -47,7 +47,7 @@ class InkTankFrameAnalyzer(Thread):
         dev = torch.device(device) 
         self.ink_tank_model = YOLO(ink_tank_model_path)
         self.ink_tank_model.to(dev)
-        self.reader = MovieReader(battle_movie_path)
+        self.reader = MovieReader(battle_movie_path) if battle_movie_path else None
         self.player_position_result: PlayerPositionAnalysisResult = None
         self.result: InkTankAnalysisResult = None
 
@@ -60,7 +60,7 @@ class InkTankFrameAnalyzer(Thread):
             raise InternalError('run must be called via create')
         ink_frames = []
         for pos_frame in self.player_position_result.frames:
-            img = self.reader.read(pos_frame.frame)
+            img = self.reader.read(pos_frame.frame) if self.reader else pos_frame.image
             if pos_frame.main_player_position:
                 main_ink = self._predict_ink_tank(img, pos_frame.main_player_position)
                 if main_ink:
