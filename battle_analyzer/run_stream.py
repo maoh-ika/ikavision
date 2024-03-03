@@ -6,6 +6,8 @@ import torch
 import threading
 import multiprocessing
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 from ultralytics import YOLO
 from ultralytics.utils.plotting import Annotator, colors
 from prediction.ikalamp_detection_process import make_frame_result as make_ikalamp_frame, make_detection_completed as make_ikalamp_result, IkalampDetectionFrame, IkalampDetectionResult
@@ -14,15 +16,18 @@ from prediction.prediction_process import run_prediction, preprocess, postproces
 from prediction.player_position_frame_analyzer import PlayerPositionFrameAnalyzer, PlayerPositionAnalysisResult
 from prediction.ink_tank_frame_analyzer import InkTankFrameAnalyzer, InkTankAnalysisResult, InkTankAnalysisFrame
 from models.ika_player import IkaPlayerPosition
+from stream.candle_chart import CandleChart, CandleValue
 
 load_dotenv()
 
 @dataclass
 class State:
+    frame_number: int
     ikalamp: IkalampDetectionResult = None
     ika: IkaPlayerDetectionResult = None
     main_player_position: PlayerPositionAnalysisResult = None
     ink_tank = InkTankAnalysisResult = None
+    ink_tank_chart = CandleChart(candle_count=-1, candle_period=30, fill_with_blank=False)
 
 @dataclass
 class InputFrame:
@@ -89,6 +94,25 @@ def update_frame(state: State, frame: np.ndarray):
     # インク残量表示
     if state.ink_tank and len(state.ink_tank.frames) == 1:
         draw_ink_tank(frame, state.ink_tank.frames[0])
+
+def update_ink_tank_chart(state: State, line, ax):
+    # グラフの表示期間（フレーム単位）
+    x_start = state.frame_number - 3600
+    if x_start < 0:
+        x_start = 0
+    x_end = state.frame_number + 600
+
+    x_data = []
+    y_data = []
+    for candle in state.ink_tank_chart.candles:
+        if candle.start_date <= x_end and candle.end_date >= x_start:
+            x_data.append((candle.start_date + candle.end_date) // 2)
+            y_data.append(candle.average * 100) # 60フレーム（1秒）の間の平均値を使う
+    line.set_xdata(x_data)
+    line.set_ydata(y_data)
+    ax.set_xlim(x_start, x_end)
+    ax.set_ylim(0, 110)
+    return line
 
 # AIモデルによる推論実行のプロセス
 class PredictionProcess(multiprocessing.Process):
@@ -209,25 +233,50 @@ class IkaResultMonitor(ResultMonitorThread):
         state.main_player_position = player_position_analyzer.analyze(state.ika)
         self.ink_tank_request_queue.put(state.main_player_position)
 
+# インク残量推定の完了監視
+class InkTankResultMonitor(ResultMonitorThread):
+    def __init__(self, state: State, result_queue: multiprocessing.Queue):
+        super().__init__(state, result_queue, self.update)
+
+    def update(self, state: State, ink_tank_result: InkTankAnalysisResult):
+        state.ink_tank = ink_tank_result
+        if len(ink_tank_result.frames) > 0:
+            # インク残量の最新値をグラフに追加
+            last_ink_frame = ink_tank_result.frames[-1]
+            state.ink_tank_chart.add_value(CandleValue(last_ink_frame.frame, last_ink_frame.main_player_ink.ink_level))
+
 if __name__ == '__main__':
     
-    cap = cv2.VideoCapture(0) # この環境ではキャプチャボードのデバイス番号は0
+    cap = cv2.VideoCapture(1) # この環境ではキャプチャボードのデバイス番号は0
     if not cap.isOpened():
         print('device not found')
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
     
-    frame_rate = int(cap.get(cv2.CAP_PROP_FPS))
-
     # ゲーム画面表示用ウィンドウ
     win_name = 'splatoon3'
     cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
     cv2.resizeWindow(win_name, 1920, 1080)
+
+    # グラフの全体設定
+    plt.ion()
+    plt.rcParams['toolbar'] = 'None'
+
+    # インク残量グラフ
+    fig, ax = plt.subplots()
+    line, = ax.plot([], [])
+    anim = FuncAnimation(fig, lambda f: update_ink_tank_chart(state, line, ax), frames=[0], interval=100)
+
+    # グラフのスタイル
+    plt.gcf().canvas.manager.window.setWindowOpacity(0.5)
+    plt.subplots_adjust(left=0.06, right=1, bottom=0.06, top=1)
+    plt.get_current_fig_manager().set_window_title('インク残量')
+    plt.show()
     
-    frame_interval = frame_rate // 3
+    frame_interval = 10
     device = os.environ.get('MODEL_DEVICE')
     
-    state = State()
+    state = State(0)
 
     # イカランプ検出モデル
     ikalamp_model_path = os.environ.get('IKALAMP_MODEL_PATH')
@@ -285,9 +334,7 @@ if __name__ == '__main__':
     ika_update_thread.start()
 
     # インク残量推定の完了監視
-    def _update_ink_tank(state: State, ink_tank_result: InkTankAnalysisResult):
-        state.ink_tank = ink_tank_result
-    ink_tank_update_thread = ResultMonitorThread(state, ink_tank_result_queue, _update_ink_tank)
+    ink_tank_update_thread = InkTankResultMonitor(state, ink_tank_result_queue)
     ink_tank_update_thread.start()
 
     # process stream
@@ -295,6 +342,7 @@ if __name__ == '__main__':
     batch_size = 1
     frame_number = 0
     while True:
+        state.frame_number = frame_number
         ret, frame = cap.read()
         if not ret:
             print('failed to read frame')
