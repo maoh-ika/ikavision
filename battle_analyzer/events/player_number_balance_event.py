@@ -1,11 +1,9 @@
 from dataclasses import dataclass
 from enum import Enum
-from threading import Thread
 from models.ikalamp import IkalampState
-from models.battle_info import BattleInfo
+from models.ika_player import IkaPlayer
 from prediction.ikalamp_detection_process import IkalampDetectionResult, IkalampDetectionFrame
 from events.util import taget_frames_generator, TestResult
-from error import InternalError
 
 class PlayerNumberBalanceState(Enum):
     EVEN = 0
@@ -58,23 +56,18 @@ class PlayerNumberBalanceMonitor:
         else:
             return PlayerNumberBalanceState.EVEN
 
-class PlayerNumberBalanceEventCreator(Thread):
-    def __init__(self, battle_info: BattleInfo) -> None:
+class PlayerNumberBalanceEventCreator:
+    def __init__(self, team: list[IkaPlayer], enemy: list[IkaPlayer]) -> None:
         super().__init__(name='PlayerNumberBalanceEventCreator')
-        self.battle_info = battle_info
+        self.team = team
+        self.enemy = enemy
         self.ikalamp_result: IkalampDetectionResult = None
         self.events: list[PlayerNumberBalanceEvent] = None
 
     def create(self, ikalamp_result: IkalampDetectionResult) -> list[PlayerNumberBalanceEvent]:
-        self.ikalamp_result = ikalamp_result
-        self.start()
-
-    def run(self):
-        if self.ikalamp_result is None:
-            raise InternalError('run must be called via create')
         events = []
-        lamp_frames = self.ikalamp_result.get_sliced_frames()
-        max_team_number, max_enemy_number = self._get_team_membeer_count(self.ikalamp_result)
+        lamp_frames = ikalamp_result.get_sliced_frames()
+        max_team_number, max_enemy_number = self._get_team_member_count(ikalamp_result)
         state_monitor = PlayerNumberBalanceMonitor(team_number=max_team_number, enemy_number=max_enemy_number)
         generator = taget_frames_generator(lamp_frames, state_monitor._is_balance_changed, exit_test_frame_count=1)
         for state_frames, _, _ in generator:
@@ -87,11 +80,11 @@ class PlayerNumberBalanceEventCreator(Thread):
             )
             events.append(event)
 
-        self.events = events
+        return events
 
-    def _get_team_membeer_count(self, ikalamp_result: IkalampDetectionResult) -> int:
-        team_number = len(self.battle_info.team_players)
-        enemy_number = len(self.battle_info.enemy_players)
+    def _get_team_member_count(self, ikalamp_result: IkalampDetectionResult) -> int:
+        team_number = len(self.team)
+        enemy_number = len(self.enemy)
         lamp_frames = ikalamp_result.get_sliced_frames()
         if team_number == 0:
             for frame in lamp_frames:

@@ -344,10 +344,8 @@ class BattleAnalyzer:
         
         self.logger.info(f'player number balance event process started.')
         processing_time = time.time()
-        player_number_balance_event_creator = PlayerNumberBalanceEventCreator(battle_info)
-        player_number_balance_event_creator.create(self.ikalamp_result)
-        player_number_balance_event_creator.join()
-        player_number_balance_events = player_number_balance_event_creator.events
+        player_number_balance_event_creator = PlayerNumberBalanceEventCreator(battle_info.team_players, battle_info.enemy_players)
+        player_number_balance_events = player_number_balance_event_creator.create(self.ikalamp_result)
         self.logger.info(f'player number balance process completed. processing time: {time.time() - processing_time}')
         if player_number_balance_events is None:
             raise InternalError('player number balance event failed')
