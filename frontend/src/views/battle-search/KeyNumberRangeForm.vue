@@ -111,10 +111,6 @@ export default defineComponent({
         gte = 0
         gteValue.value = gte
       }
-      if (gte > lte) {
-        lte = gte
-        lteValue.value = lte 
-      }
       props.updated(gte, lte)
     }
     
@@ -122,10 +118,6 @@ export default defineComponent({
       if (lte === '') {
         lte = 0
         lteValue.value = lte
-      }
-      if (gte > lte) {
-        gte = lte
-        gteValue.value = lte 
       }
       props.updated(gte, lte)
     }
