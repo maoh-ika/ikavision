@@ -15,19 +15,14 @@ from prediction.ika_player_detection_process import make_frame_result as make_ik
 from prediction.prediction_process import run_prediction, preprocess, postprocess
 from prediction.player_position_frame_analyzer import PlayerPositionFrameAnalyzer, PlayerPositionAnalysisResult
 from prediction.ink_tank_frame_analyzer import InkTankFrameAnalyzer, InkTankAnalysisResult, InkTankAnalysisFrame
+from events.player_number_balance_event import PlayerNumberBalanceEventCreator, PlayerNumberBalanceEvent, PlayerNumberBalanceMonitor
 from models.ika_player import IkaPlayerPosition
-from stream.candle_chart import CandleChart, CandleValue
+from events.util import taget_frames_generator
+from stream.state import State
+from stream.player_balance_window import PlayerBalanceWindow
+from stream.candle_chart import CandleValue
 
 load_dotenv()
-
-@dataclass
-class State:
-    frame_number: int
-    ikalamp: IkalampDetectionResult = None
-    ika: IkaPlayerDetectionResult = None
-    main_player_position: PlayerPositionAnalysisResult = None
-    ink_tank = InkTankAnalysisResult = None
-    ink_tank_chart = CandleChart(candle_count=-1, candle_period=30, fill_with_blank=False)
 
 @dataclass
 class InputFrame:
@@ -60,21 +55,22 @@ def draw_main_player(img: np.ndarray, main_player_position: IkaPlayerPosition):
         cv2.rectangle(img, (xyxy[0], xyxy[1]), (xyxy[2], xyxy[3]), (255, 0, 255), 3)
 
 def draw_ink_tank(img: np.ndarray, ink_tank: InkTankAnalysisFrame):
-    if ink_tank.main_player_ink:
-        level_x = 0
-        level_y = 0
-        if ink_tank.main_player_ink.consumed:
-            img[ink_tank.main_player_ink.consumed.mask[:, 1], ink_tank.main_player_ink.consumed.mask[:, 0]] = (255,0,0)
-            level_x = max(level_x, ink_tank.main_player_ink.consumed.xyxy[2])
-            level_y = max(level_y, ink_tank.main_player_ink.consumed.xyxy[3])
-        if ink_tank.main_player_ink.remaining:
-            img[ink_tank.main_player_ink.remaining.mask[:, 1], ink_tank.main_player_ink.remaining.mask[:, 0]] = (0,0,255)
-            level_x = max(level_x, ink_tank.main_player_ink.remaining.xyxy[2])
-            level_y = max(level_y, ink_tank.main_player_ink.remaining.xyxy[3])
-        level_text = f'{round(ink_tank.main_player_ink.ink_level * 100)}%'
-        cv2.putText(img, level_text, (level_x, level_y), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255), 4)
+    if not ink_tank.main_player_ink:
+        return 
+    level_x = 0
+    level_y = 0
+    if ink_tank.main_player_ink.consumed:
+        img[ink_tank.main_player_ink.consumed.mask[:, 1], ink_tank.main_player_ink.consumed.mask[:, 0]] = (255,0,0)
+        level_x = max(level_x, ink_tank.main_player_ink.consumed.xyxy[2])
+        level_y = max(level_y, ink_tank.main_player_ink.consumed.xyxy[3])
+    if ink_tank.main_player_ink.remaining:
+        img[ink_tank.main_player_ink.remaining.mask[:, 1], ink_tank.main_player_ink.remaining.mask[:, 0]] = (0,0,255)
+        level_x = max(level_x, ink_tank.main_player_ink.remaining.xyxy[2])
+        level_y = max(level_y, ink_tank.main_player_ink.remaining.xyxy[3])
+    level_text = f'{round(ink_tank.main_player_ink.ink_level * 100)}%'
+    cv2.putText(img, level_text, (level_x, level_y), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255), 4)
 
-def update_frame(state: State, frame: np.ndarray):
+def update_frame(state: State, frame: np.ndarray, player_balance_window: PlayerBalanceWindow):
     # ゲーム画面にイカランプの枠線を書き込み
     if state.ikalamp:
         ikalamp_frame = state.ikalamp.frames[0]
@@ -94,6 +90,8 @@ def update_frame(state: State, frame: np.ndarray):
     # インク残量表示
     if state.ink_tank and len(state.ink_tank.frames) == 1:
         draw_ink_tank(frame, state.ink_tank.frames[0])
+
+    player_balance_window.draw(state)
 
 def update_ink_tank_chart(state: State, line, ax):
     # グラフの表示期間（フレーム単位）
@@ -217,6 +215,28 @@ class ResultMonitorThread(threading.Thread):
             result = self.result_queue.get()
             self.update_func(self.state, result)
 
+class IkalampResultMonitor(ResultMonitorThread):
+    def __init__(self, state: State, result_queue: multiprocessing.Queue):
+        super().__init__(state, result_queue, self.update)
+        self.player_number_monitor = PlayerNumberBalanceMonitor(4, 4)
+
+    def update(self, state: State, ikalamp_result: IkalampDetectionResult):
+        state.ikalamp = ikalamp_result
+        balance_event = self.make_number_balance_event(ikalamp_result)
+        if balance_event:
+            state.number_balance_event = balance_event
+
+    def make_number_balance_event(self, ikalamp_result: IkalampDetectionResult) -> PlayerNumberBalanceEvent:
+        generator = taget_frames_generator(ikalamp_result.frames, self.player_number_monitor.is_balance_changed, exit_test_frame_count=1)
+        for state_frames, _, _ in generator:
+            return PlayerNumberBalanceEvent(
+                team_number=self.player_number_monitor.cur_team_number,
+                enemy_number=self.player_number_monitor.cur_enemy_number,
+                balance_state=self.player_number_monitor.cur_state,
+                start_frame=state_frames[0].frame,
+                end_frame=state_frames[-1].frame
+            )
+
 class IkaResultMonitor(ResultMonitorThread):
     def __init__(self,
         state: State,
@@ -268,10 +288,13 @@ if __name__ == '__main__':
     anim = FuncAnimation(fig, lambda f: update_ink_tank_chart(state, line, ax), frames=[0], interval=100)
 
     # グラフのスタイル
-    plt.gcf().canvas.manager.window.setWindowOpacity(0.5)
+    plt.gcf().canvas.manager.window.setWindowOpacity(0.3)
     plt.subplots_adjust(left=0.06, right=1, bottom=0.06, top=1)
     plt.get_current_fig_manager().set_window_title('インク残量')
     plt.show()
+
+    # 人数状況ウインドウ
+    player_balance_window = PlayerBalanceWindow(300, 100, 1)
     
     frame_interval = 10
     device = os.environ.get('MODEL_DEVICE')
@@ -324,9 +347,7 @@ if __name__ == '__main__':
     player_position_analyzer = PlayerPositionFrameAnalyzer()
 
     # イカランプ検出の完了監視
-    def _updateIkalamp(state: State, ikalamp_result: IkalampDetectionResult):
-        state.ikalamp = ikalamp_result
-    ikalamp_update_thread = ResultMonitorThread(state, ikalamp_result_queue, update_func=_updateIkalamp)
+    ikalamp_update_thread = IkalampResultMonitor(state, ikalamp_result_queue)
     ikalamp_update_thread.start()
     
     # イカタコ位置検出の完了監視
@@ -350,11 +371,11 @@ if __name__ == '__main__':
         
         if frame_number % frame_interval != 0:
             frame_number += 1
-            update_frame(state, frame)        
+            update_frame(state, frame, player_balance_window)
             cv2.imshow(win_name, frame)
             cv2.waitKey(1)
             continue
-            
+
         input_batch = []
         input_batch.append(InputFrame(frame, frame_number))
 
@@ -363,7 +384,7 @@ if __name__ == '__main__':
         # イカタコ検出スレッド実行 
         ika_request_queue.put(input_batch)
 
-        update_frame(state, frame)        
+        update_frame(state, frame, player_balance_window)        
         cv2.imshow(win_name, frame)
 
         if cv2.waitKey(1) & 0xff == ord('q'):

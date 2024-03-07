@@ -27,7 +27,7 @@ class PlayerNumberBalanceMonitor:
         self.prev_enemy_number = enemy_number
         self.prev_state = self.cur_state
 
-    def _is_balance_changed(self, frame: IkalampDetectionFrame, in_target_frame: bool) -> TestResult:
+    def is_balance_changed(self, frame: IkalampDetectionFrame, in_target_frame: bool) -> TestResult:
         if frame.team is None or frame.enemy is None:
             return TestResult.PENDING
         team_number = len(list(filter(lambda l: l.state in [IkalampState.LIVE, IkalampState.SP], frame.team)))
@@ -69,7 +69,7 @@ class PlayerNumberBalanceEventCreator:
         lamp_frames = ikalamp_result.get_sliced_frames()
         max_team_number, max_enemy_number = self._get_team_member_count(ikalamp_result)
         state_monitor = PlayerNumberBalanceMonitor(team_number=max_team_number, enemy_number=max_enemy_number)
-        generator = taget_frames_generator(lamp_frames, state_monitor._is_balance_changed, exit_test_frame_count=1)
+        generator = taget_frames_generator(lamp_frames, state_monitor.is_balance_changed, exit_test_frame_count=1)
         for state_frames, _, _ in generator:
             event = PlayerNumberBalanceEvent(
                 team_number=state_monitor.prev_team_number,

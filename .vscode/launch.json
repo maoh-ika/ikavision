@@ -2045,6 +2045,14 @@
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": ["--user_id", "splatoon3_environment", "--max_workers", "1", "--reverse"]
+    },
+    {
+      "name": "run_stream",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/battle_analyzer/run_stream.py",
+      "console": "integratedTerminal",
+      "justMyCode": false
     }
   ]
 }
