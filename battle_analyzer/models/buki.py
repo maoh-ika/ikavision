@@ -126,6 +126,9 @@ main_labels = {
     'order_spinner_replica': 'オーダースピナーレプリカ',
     'order_stringer_replica': 'オーダーストリンガーレプリカ',
     'order_wiper_replica': 'オーダーワイパーレプリカ',
+    'order_wiper_replica_beta': 'スクイックリンβ',
+    '24shiki_harikaegasa_kou': '24式張替傘・甲',
+    '52gallon_deco': '.52ガロンデコ',
 }
 
 sub_labels = {
