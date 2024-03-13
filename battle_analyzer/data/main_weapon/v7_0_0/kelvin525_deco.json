@@ -1,0 +1,13 @@
+{
+    "title": "Splatoon3",
+    "version": "7.0.0",
+    "bukiId": "kelvin525_deco",
+    "bukiName": "ケルビン525デコ",
+    "bukiType": "maneuver",
+    "subWeapon": "point_sensor",
+    "spWeapon": "ultra_shoot",
+    "spRequiredPoints": 190,
+    "weight": "middle",
+    "mainWeapon": {
+    }
+}

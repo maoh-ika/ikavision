@@ -1,0 +1,13 @@
+{
+    "title": "Splatoon3",
+    "version": "7.0.0",
+    "bukiId": "explosher_custom",
+    "bukiName": "エクスプロッシャーカスタム",
+    "bukiType": "slosher",
+    "subWeapon": "splash_shield",
+    "spWeapon": "ultra_tyakuti",
+    "spRequiredPoints": 200,
+    "weight": "heavy",
+    "mainWeapon": {
+    }
+}

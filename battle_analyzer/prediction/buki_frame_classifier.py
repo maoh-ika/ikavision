@@ -129,7 +129,18 @@ cls_buki_map = {
     'order_shooter_replica': MainWeapon.ORDER_SHOOTER_REPLICA,
     'order_spinner_replica': MainWeapon.ORDER_SPINNER_REPLICA,
     'order_stringer_replica': MainWeapon.ORDER_STRINGER_REPLICA,
-    'order_wiper_replica': MainWeapon.ORDER_WIPER_REPLICA
+    'order_wiper_replica': MainWeapon.ORDER_WIPER_REPLICA,
+    'classic_squiffer_beta': MainWeapon.CLASSIC_SQUIFFER_BETA,
+    '24shiki_harikaegasa_kou': MainWeapon._24SHIKI_HARIKAEGASA_KOU,
+    '52gallon_deco': MainWeapon._52GALLON_DECO,
+    'moplin_d': MainWeapon.MOPLIN_D,
+    'eliter_4k_custom': MainWeapon.ELITER_4K_CUSTOM,
+    'gaen_ff': MainWeapon.GAEN_FF,
+    'variable_roller_foil': MainWeapon.VARIABLE_ROLLER_FOIL,
+    '4k_scope_custom': MainWeapon.4K_SCOPE_CUSTOM,
+    'nautilus79': MainWeapon.NAUTILUS79,
+    'explosher_custom': MainWeapon.EXPLOSHER_CUSTOM,
+    'kelvin525_deco': MainWeapon.KELVIN525_DECO,
 }
 
 @dataclass

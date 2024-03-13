@@ -1,0 +1,13 @@
+{
+    "title": "Splatoon3",
+    "version": "7.0.0",
+    "bukiId": "moplin_d",
+    "bukiName": "モップリンD",
+    "bukiType": "slosher",
+    "subWeapon": "jump_beacon",
+    "spWeapon": "hop_sonar",
+    "spRequiredPoints": 190,
+    "weight": "middle",
+    "mainWeapon": {
+    }
+}

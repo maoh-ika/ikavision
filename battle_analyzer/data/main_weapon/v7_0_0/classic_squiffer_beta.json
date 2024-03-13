@@ -1,0 +1,13 @@
+{
+    "title": "Splatoon3",
+    "version": "7.0.0",
+    "bukiId": "classic_squiffer_beta",
+    "bukiName": "スクイックリンβ",
+    "bukiType": "charger",
+    "subWeapon": "robot_bomb",
+    "spWeapon": "syoku_wonder",
+    "spRequiredPoints": 190,
+    "weight": "middle",
+    "mainWeapon": {
+    }
+}

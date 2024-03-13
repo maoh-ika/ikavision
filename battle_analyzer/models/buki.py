@@ -126,9 +126,17 @@ main_labels = {
     'order_spinner_replica': 'オーダースピナーレプリカ',
     'order_stringer_replica': 'オーダーストリンガーレプリカ',
     'order_wiper_replica': 'オーダーワイパーレプリカ',
-    'order_wiper_replica_beta': 'スクイックリンβ',
+    'classic_squiffer_beta': 'スクイックリンβ',
     '24shiki_harikaegasa_kou': '24式張替傘・甲',
     '52gallon_deco': '.52ガロンデコ',
+    'moplin_d': 'モップリンD',
+    'eliter_4k_custom': 'リッター4Kカスタム',
+    'gaen_ff': 'ガエンFF',
+    'variable_roller_foil': 'ヴァリアブルローラーフォイル',
+    '4k_scope_custom': '4Kスコープカスタム',
+    'nautilus79': 'ノーチラス79',
+    'explosher_custom': 'エクスプロッシャーカスタム',
+    'kelvin525_deco': 'ケルビン525デコ',
 }
 
 sub_labels = {
@@ -293,6 +301,23 @@ class MainWeapon(Enum):
     ORDER_SPINNER_REPLICA = auto()
     ORDER_STRINGER_REPLICA = auto()
     ORDER_WIPER_REPLICA = auto()
+    SPLA_MANEUVER_COLLABO = auto()
+    SPY_GADGET_SOLARE = auto()
+    VINCENT_NOUVEAU = auto()
+    OCTA_SHOOTER_REPLICA = auto()
+    ORDER_BLASTER_REPLICA = auto()
+    ORDER_BRUSH_REPLICA = auto()
+    ORDER_CHARGER_REPLICA = auto()
+    ORDER_MANEUVER_REPLICA = auto()
+    ORDER_ROLLER_REPLICA = auto()
+    ORDER_SHELTER_REPLICA = auto()
+    ORDER_SHOOTER_REPLICA = auto()
+    ORDER_SPINNER_REPLICA = auto()
+    ORDER_STRINGER_REPLICA = auto()
+    ORDER_WIPER_REPLICA = auto()
+    CLASSIC_SQUIFFER_BETA = auto()
+    _24SHIKI_HARIKAEGASA_KOU = auto()
+    _52GALLON_DECO = auto()
 
 class SubWeapon(Enum):
     UNKNOWN = auto()

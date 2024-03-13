@@ -108,7 +108,7 @@ def get_list(channel_id: str, max_count: int=9999, cache_dir: str=None) -> list[
     params = {
         'part': 'snippet',
         'channelId': channel_id,
-        'maxResults': 1,
+        'maxResults': max_count,
         'order': 'date',
         'key': api_key,
     }
@@ -127,10 +127,10 @@ def get_list(channel_id: str, max_count: int=9999, cache_dir: str=None) -> list[
         
 
 if __name__ == '__main__':
-    channel_id = 'EntD9axqHBA'
+    channel_id = 'UCoA0JdwZGY6iDMdx6US4BMQ'
     out_dir = f'./temp/{channel_id}'
     
-    video_id = '2sG1j_wkLds'
+    video_id = 'y4dF95obSrQ'
     download(video_id, out_dir)
     exit()
     
@@ -138,4 +138,4 @@ if __name__ == '__main__':
     videos = get_list(channel_id, cache_dir=out_dir)
     for video in videos:
         video_id = video['id']
-        download(video_id, out_dir, live_only=True)
+        download(video_id, out_dir)
