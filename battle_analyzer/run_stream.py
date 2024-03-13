@@ -93,6 +93,12 @@ def update_frame(state: State, frame: np.ndarray, player_balance_window: PlayerB
     # 人数状況表示
     player_balance_window.draw(state)
 
+    #frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    #alpha = 1.5  # コントラストを変更するための係数
+    #beta = -200    # 明るさを変更するための値
+    #frame = cv2.convertScaleAbs(frame, alpha=alpha, beta=beta)
+    return frame
+        
 def update_ink_tank_chart(state: State, line, ax):
     # グラフの表示期間（フレーム単位）
     x_start = state.frame_number - 3600
@@ -271,7 +277,7 @@ class InkTankResultMonitor(ResultMonitorThread):
 
 if __name__ == '__main__':
     
-    cap = cv2.VideoCapture(1) # この環境ではキャプチャボードのデバイス番号は0
+    cap = cv2.VideoCapture(0) # この環境ではキャプチャボードのデバイス番号は0
     if not cap.isOpened():
         print('device not found')
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
@@ -375,7 +381,7 @@ if __name__ == '__main__':
         
         if frame_number % frame_interval != 0:
             frame_number += 1
-            update_frame(state, frame, player_balance_window)        
+            frame = update_frame(state, frame, player_balance_window)        
             cv2.imshow(win_name, frame)
             cv2.waitKey(1)
             continue
@@ -388,7 +394,8 @@ if __name__ == '__main__':
         # イカタコ検出スレッド実行 
         ika_request_queue.put(input_batch)
 
-        update_frame(state, frame, player_balance_window)        
+        frame = update_frame(state, frame, player_balance_window)
+
         cv2.imshow(win_name, frame)
 
         if cv2.waitKey(1) & 0xff == ord('q'):
