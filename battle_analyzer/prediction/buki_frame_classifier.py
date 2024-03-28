@@ -137,7 +137,7 @@ cls_buki_map = {
     'eliter_4k_custom': MainWeapon.ELITER_4K_CUSTOM,
     'gaen_ff': MainWeapon.GAEN_FF,
     'variable_roller_foil': MainWeapon.VARIABLE_ROLLER_FOIL,
-    '4k_scope_custom': MainWeapon.4K_SCOPE_CUSTOM,
+    '4k_scope_custom': MainWeapon._4K_SCOPE_CUSTOM,
     'nautilus79': MainWeapon.NAUTILUS79,
     'explosher_custom': MainWeapon.EXPLOSHER_CUSTOM,
     'kelvin525_deco': MainWeapon.KELVIN525_DECO,
