@@ -8,6 +8,8 @@ deps/
 build/
 dist/
 logs/
+train/out/
+battle_analyzer/tests/testdata
 .aws-sam/
 .DS_Store
 yolov8*

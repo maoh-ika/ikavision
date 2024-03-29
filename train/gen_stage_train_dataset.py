@@ -1,7 +1,7 @@
 import os
 from gen_detection_dataset import get_dataset
 
-src_dir='/media/maohika/1c0ddf00-ee1d-46f9-b3bb-e958e891243f/splatoon3/dataset/stage'
+src_dir='//wsl.localhost/Ubuntu-22.04/mnt/wsl/PHYSICALDRIVE1/splatoon3/dataset/stage/'
 train_dir='./dataset/stage/train/'
 val_dir='./dataset/stage/val/'
 train_ratio=0.8

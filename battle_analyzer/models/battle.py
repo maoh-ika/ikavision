@@ -39,6 +39,7 @@ class BattleStage(Enum):
     OHYOU = 19
     BANGAITEI = 20
     NEGITORO = 21
+    KAZIKI = 22
 
 class BattleWinLose(Enum):
     WIN = 0
