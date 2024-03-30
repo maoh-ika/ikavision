@@ -456,6 +456,7 @@ const lang = {
     ohyou: 'オヒョウ海運',
     bangaitei: 'バンガイ亭',
     negitoro: 'ネギトロ炭鉱',
+    kaziki: 'カジキ空港',
     map: 'マップ',
     unknown: '不明'
   },
