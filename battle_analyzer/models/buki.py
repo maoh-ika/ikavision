@@ -114,7 +114,29 @@ main_labels = {
     'sblast91': 'S-BLAST91',
     'spla_maneuver_collabo': 'スプラマニューバーコラボ',
     'spy_gadget_solare': 'スパイガジェットソレーラ',
-    'vincent_nouveau': 'フィンセント・ヒュー'
+    'vincent_nouveau': 'フィンセント・ヒュー',
+    'octa_shooter_replica': 'オクタシューターレプリカ',
+    'order_blaster_replica': 'オーダーブラスターレプリカ',
+    'order_brush_replica': 'オーダーブラシレプリカ',
+    'order_charger_replica': 'オーダーチャージャーレプリカ',
+    'order_maneuver_replica': 'オーダーマニューバーレプリカ',
+    'order_roller_replica': 'オーダーローラーレプリカ',
+    'order_shelter_replica': 'オーダーシェルターレプリカ',
+    'order_shooter_replica': 'オーダーシューターレプリカ',
+    'order_spinner_replica': 'オーダースピナーレプリカ',
+    'order_stringer_replica': 'オーダーストリンガーレプリカ',
+    'order_wiper_replica': 'オーダーワイパーレプリカ',
+    'classic_squiffer_beta': 'スクイックリンβ',
+    '24shiki_harikaegasa_kou': '24式張替傘・甲',
+    '52gallon_deco': '.52ガロンデコ',
+    'moplin_d': 'モップリンD',
+    'eliter_4k_custom': 'リッター4Kカスタム',
+    'gaen_ff': 'ガエンFF',
+    'variable_roller_foil': 'ヴァリアブルローラーフォイル',
+    '4k_scope_custom': '4Kスコープカスタム',
+    'nautilus79': 'ノーチラス79',
+    'explosher_custom': 'エクスプロッシャーカスタム',
+    'kelvin525_deco': 'ケルビン525デコ',
 }
 
 sub_labels = {
@@ -268,6 +290,28 @@ class MainWeapon(Enum):
     SPLA_MANEUVER_COLLABO = auto()
     SPY_GADGET_SOLARE = auto()
     VINCENT_NOUVEAU = auto()
+    OCTA_SHOOTER_REPLICA = auto()
+    ORDER_BLASTER_REPLICA = auto()
+    ORDER_BRUSH_REPLICA = auto()
+    ORDER_CHARGER_REPLICA = auto()
+    ORDER_MANEUVER_REPLICA = auto()
+    ORDER_ROLLER_REPLICA = auto()
+    ORDER_SHELTER_REPLICA = auto()
+    ORDER_SHOOTER_REPLICA = auto()
+    ORDER_SPINNER_REPLICA = auto()
+    ORDER_STRINGER_REPLICA = auto()
+    ORDER_WIPER_REPLICA = auto()
+    CLASSIC_SQUIFFER_BETA = auto()
+    _24SHIKI_HARIKAEGASA_KOU = auto()
+    _52GALLON_DECO = auto()
+    MOPLIN_D = auto()
+    ELITER_4K_CUSTOM = auto()
+    GAEN_FF = auto()
+    VARIABLE_ROLLER_FOIL = auto()
+    _4K_SCOPE_CUSTOM = auto()
+    NAUTILUS79 = auto()
+    EXPLOSHER_CUSTOM = auto()
+    KELVIN525_DECO = auto()
 
 class SubWeapon(Enum):
     UNKNOWN = auto()

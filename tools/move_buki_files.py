@@ -110,9 +110,31 @@ label_list = [
     'sblast91',
     'spla_maneuver_collabo',
     'spy_gadget_solare',
-    'vincent_nouveau'
+    'vincent_nouveau',
+    'octa_shooter_replica',
+    'order_blaster_replica',
+    'order_brush_replica',
+    'order_charger_replica',
+    'order_maneuver_replica',
+    'order_roller_replica',
+    'order_shelter_replica',
+    'order_shooter_replica',
+    'order_spinner_replica',
+    'order_stringer_replica',
+    'order_wiper_replica',
+    'classic_squiffer_beta',
+    '24shiki_harikaegasa_kou',
+    '52gallon_deco',
+    'moplin_d',
+    'eliter_4k_custom',
+    'gaen_ff',
+    'variable_roller_foil',
+    '4k_scope_custom',
+    'nautilus79',
+    'explosher_custom',
+    'kelvin525_deco',
 ]
 
-src_dir = '/Users/maohika/Downloads/buki/{label}'
-dst_dir = '/Volumes/splatoon3/dataset/buki/orig/{label}/ikalamp'
-move_files(label_list, src_dir, dst_dir, copy=False, postfix='ikalamp')
+src_dir = 'C:/work/temp/bukidata/{label}'
+dst_dir = '//wsl.localhost/Ubuntu-22.04/mnt/wsl/PHYSICALDRIVE1/splatoon3/dataset/buki/orig/{label}/ikalamp'
+move_files(label_list, src_dir, dst_dir, copy=True, postfix='ikalamp')

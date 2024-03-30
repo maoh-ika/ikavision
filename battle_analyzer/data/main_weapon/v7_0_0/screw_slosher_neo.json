@@ -1,0 +1,33 @@
+{
+    "title": "Splatoon3",
+    "version": "4.0.0",
+    "bukiId": "screw_slosher_neo",
+    "bukiName": "\u30b9\u30af\u30ea\u30e5\u30fc\u30b9\u30ed\u30c3\u30b7\u30e3\u30fc\u30cd\u30aa",
+    "bukiType": "slosher",
+    "subWeapon": "point_sensor",
+    "spWeapon": "ultra_shoot",
+    "spRequiredPoints": 190,
+    "weight": "middle",
+    "mainWeapon": {
+        "minDamageRange": 3.3,
+        "maxDamageRange": 3.3,
+        "reticleActiveRange": "",
+        "minPaintRange": 3.5,
+        "maxPaintRange": 3.5,
+        "shootingReadyFramesHito": 12,
+        "minHitDamage": 76.0,
+        "maxHitDamage": 76.0,
+        "minCertainKillNumber": 3.0,
+        "maxCertainKillNumber": 3.0,
+        "shootIntervalFrames": 38,
+        "dps": 120.0,
+        "shootingDurationSeconds": 6.333,
+        "inkConsumptionPercent": 9.2,
+        "shootCapability": 10.0,
+        "inkRecoveryFrames": 42,
+        "paintPointPerShoot": 14.7,
+        "hitoSpeedInShooting": 0.7,
+        "ikaSpeed": 1.92,
+        "hitoSpeed": 0.96
+    }
+}

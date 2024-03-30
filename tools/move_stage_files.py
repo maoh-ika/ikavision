@@ -22,11 +22,12 @@ label_list = [
 #    'takaashi',
 #    'ohyou',
 #    'bangaitei',
-    'negitoro'
+#    'negitoro',
+    'kaziki'
 ]
 
-src_dir = '/Users/maoh_ika/Downloads/stage/done'
-dst_dir = '/Volumes/splatoon3/dataset/stage/{label}'
+src_dir = 'C:/work/temp/images'
+dst_dir = '//wsl.localhost/Ubuntu-22.04/mnt/wsl/PHYSICALDRIVE1/splatoon3/dataset/stage/{label}'
 
 for label in label_list:
     formated_src_dir = src_dir.format(label=label)

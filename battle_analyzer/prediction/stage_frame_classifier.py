@@ -92,6 +92,8 @@ class StageFrameClassifier:
                     stage = BattleStage.BANGAITEI
                 elif cls == 29: # 'stage_negitoro_reel
                     stage = BattleStage.NEGITORO
+                elif cls == 30: # 'stage_kaziki_pillar
+                    stage = BattleStage.KAZIKI
 
                 if stage != BattleStage.UNKNOWN:
                     if stage not in stage_object_count:

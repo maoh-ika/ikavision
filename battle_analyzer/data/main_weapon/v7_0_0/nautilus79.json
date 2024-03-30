@@ -1,0 +1,13 @@
+{
+    "title": "Splatoon3",
+    "version": "7.0.0",
+    "bukiId": "nautilus79",
+    "bukiName": "ノーチラス79",
+    "bukiType": "spiner",
+    "subWeapon": "kyuuban_bomb",
+    "spWeapon": "ultra_tyakuti",
+    "spRequiredPoints": 210,
+    "weight": "middle",
+    "mainWeapon": {
+    }
+}
