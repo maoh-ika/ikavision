@@ -1,54 +1,19 @@
 <template>
-  <div class="row justify-center tableContainer">
-    <div :style="{ display: 'flex', overflow: 'scroll',  width: '90%', height: '100%' }">
-      <div class="q-mx-sm q-my-lg" v-for="stage in stages" :key="stage">
-        <div class="text-center"> {{ $t(`battleStage.${stage}`) }}</div>
-        <q-table
-          flat bordered dense
-          class="cst-sticky-header"
-          align="left"
-          :rows="makeRanking(stage)"
-          :columns="columns"
-          :hide-pagination="true"
-          :pagination="{rowsPerPage: 1000}"
-          :no-data-label="$t('statistics.bukiStatistics.noData')"
-          row-key="bukiId"
-          column-sort-order="ad"
-          binary-state-sort
-        >
-          <template v-slot:body="props">
-            <q-tr :props="props">
-              <q-td key="number" :props="props">
-                {{ props.rowIndex + 1 }}
-              </q-td>
-              <q-td key="bukiId" :props="props">
-                <div class="row items-center q-pa-sm">
-                  <div>
-                    {{ $t(`buki.main.${props.row.bukiId}`) }}
-                  </div>
-                </div>
-              </q-td>
-              <q-td key="value" :props="props">
-                {{ props.row.value + valueUnit }}
-              </q-td>
-              <q-td key="rocIn24h" :props="props" :class="{increase: props.row.rocIn24h > 0, decrease: props.row.rocIn24h < 0}" >
-                {{ `${round(props.row.rocIn24h * 100, 10)}%` }}
-              </q-td>
-            </q-tr>
-          </template>
-        </q-table>
-      </div>
-    </div>
-  </div>
+  <BukiRankingTable
+    :make-ranking="makeRanking"
+    :make-item-label="makeStageLabel"
+    :rank-items="stages"
+    :value-column-name="valueColumnName"
+    :value-unit="valueUnit"
+  />
 </template>
   
 <script lang="ts">
-import { defineComponent, computed, onMounted } from 'vue'
-import type { QTableColumn } from 'quasar'
+import { defineComponent, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { round } from '@/modules/Utils'
 import type { BattleStage } from '@/models/Battle'
+import BukiRankingTable from './BukiRankingTable.vue'
 
 export interface BukiItem {
   bukiId: string
@@ -58,7 +23,7 @@ export interface BukiItem {
 
 export default defineComponent({
   name: 'BukiStageRankingTable',
-  components: {},
+  components: { BukiRankingTable },
   props: {
     makeRanking: {
       type: Function,
@@ -79,21 +44,17 @@ export default defineComponent({
 
     const stages = computed((): BattleStage[] => {
       const stages = store.getters['battleEnvironment/getAllStages']() as BattleStage[]
-      stages.sort((a, b) => t.t(`battleStage.${a}`) < t.t(`battleStage.${b}`) ? -1 : 1)
+      stages.sort((a, b) => makeStageLabel(a) < makeStageLabel(b) ? -1 : 1)
       return stages
     })
 
-    const columns: QTableColumn[] = [
-      { name: 'number', label: 'No.', field: 'number', align: 'left', sortable: false , classes: 'rowItem cst-text-overflow', headerClasses: 'cst-caption'},
-      { name: 'bukiId', label: t.t('general.buki'), field: 'bukiId', align: 'left', sortable: false, style: 'max-width: 150px', classes: 'rowItem cst-text-overflow', headerClasses: 'cst-caption' },
-      { name: 'value', label: props.valueColumnName, field: 'value', align: 'left', sortable: true, classes: 'cst-text-overflow', headerClasses: 'cst-caption' },
-      { name: 'rocIn24h', label: t.t('general.rocIn24h'), field: 'rocIn24h', align: 'left', sortable: true, classes: 'cst-text-overflow', headerClasses: 'cst-caption'},
-    ]
+    const makeStageLabel = (stage: BattleStage): string => {
+      return t.t(`battleStage.${stage}`)
+    }
 
     return {
-      columns,
       stages,
-      round,
+      makeStageLabel,
     }
   }
 })
@@ -111,6 +72,9 @@ export default defineComponent({
 }
 .tableContainer {
   width: 100%;
-  height: 300px;
+}
+.carouselSlide {
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 </style>

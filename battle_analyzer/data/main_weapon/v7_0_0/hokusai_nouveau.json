@@ -1,0 +1,49 @@
+{
+    "title": "Splatoon3",
+    "version": "4.0.0",
+    "bukiId": "hokusai_nouveau",
+    "bukiName": "\u30db\u30af\u30b5\u30a4\u30fb\u30d2\u30e5\u30fc",
+    "bukiType": "fude",
+    "subWeapon": "jump_beacon",
+    "spWeapon": "amefurashi",
+    "spRequiredPoints": 180,
+    "weight": "middle",
+    "mainWeapon": {
+        "shake": {
+            "minEffectiveRange": 1.8,
+            "maxEffectiveRange": 1.8,
+            "minPaintRange": 2.6,
+            "maxPaintRange": 2.6,
+            "minHitDamage": 10.0,
+            "maxHitDamage": 40.0,
+            "minCertainKillNumber": 3.0,
+            "maxCertainKillNumber": 10.0,
+            "shootIntervalFrames": 11,
+            "secondsPerKill": 0.383,
+            "dps": 218.18,
+            "shootingDurationSeconds": 5.683,
+            "shootingReadyFramesHito": 3,
+            "shootRecoveryFrames": 10,
+            "inkConsumptionPercent": 3.0,
+            "shootCapability": 33.0,
+            "hitoSpeedInShooting": 0.3,
+            "inkRecoveryFrames": 30,
+            "hitoSpeed": 0.96,
+            "paintPointPerShoot": 7.5,
+            "ikaSpeed": 1.92
+        },
+        "paint": {
+            "minHitDamage": 25.0,
+            "maxHitDamage": 25.0,
+            "minCertainKillNumber": 4.0,
+            "maxCertainKillNumber": 4.0,
+            "paintMovingDuration": 11.06,
+            "paintMovingRange": 0.36,
+            "inkConsumptionPercent": 9.0,
+            "shootCapability": null,
+            "minPaintMovingSpeed": 1.68,
+            "maxPaintMovingSpeed": 1.68,
+            "inkRecoveryFrames": 20
+        }
+    }
+}

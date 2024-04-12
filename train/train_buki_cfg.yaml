@@ -1,10 +1,10 @@
 task: classify
 mode: train
 
-model: yolov8n-cls.pt
+model: yolov8s-cls.pt
 device: cuda
 batch: 100
 epochs: 100
 imgsz: 128
 
-data: /home/maohika/work/ika/dataset/buki
+data: C:/work/ikavision/dataset/buki

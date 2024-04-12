@@ -1,0 +1,13 @@
+{
+    "title": "Splatoon3",
+    "version": "7.0.0",
+    "bukiId": "variable_roller_foil",
+    "bukiName": "ヴァリアブルローラーフォイル",
+    "bukiType": "roller",
+    "subWeapon": "kyuuban_bomb",
+    "spWeapon": "suminaga_sheet",
+    "spRequiredPoints": 200,
+    "weight": "middle",
+    "mainWeapon": {
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "title": "Splatoon3",
+    "version": "7.0.0",
+    "bukiId": "24shiki_harikaegasa_kou",
+    "bukiName": "24式張替傘・甲",
+    "bukiType": "shelter",
+    "subWeapon": "line_marker",
+    "spWeapon": "great_barrier",
+    "spRequiredPoints": 190,
+    "weight": "middle",
+    "mainWeapon": {
+    }
+}

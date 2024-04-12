@@ -1,0 +1,13 @@
+{
+    "title": "Splatoon3",
+    "version": "7.0.0",
+    "bukiId": "52gallon_deco",
+    "bukiName": ".52ガロンデコ",
+    "bukiType": "shooter",
+    "subWeapon": "curling_bomb",
+    "spWeapon": "suminaga_sheet",
+    "spRequiredPoints": 190,
+    "weight": "middle",
+    "mainWeapon": {
+    }
+}

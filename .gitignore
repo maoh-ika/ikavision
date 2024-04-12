@@ -8,6 +8,9 @@ deps/
 build/
 dist/
 logs/
+models/
+train/out/
+battle_analyzer/tests/testdata
 .aws-sam/
 .DS_Store
 yolov8*
@@ -17,3 +20,5 @@ yolov8*
 *.debug
 *.cache
 *template.*
+*.bkp
+*.dtmp

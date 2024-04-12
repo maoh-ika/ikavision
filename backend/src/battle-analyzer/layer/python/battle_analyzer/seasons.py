@@ -6,6 +6,7 @@ seasons = {
         { 'name': '2023_sizzle_season', 'start_timestamp': 1685584800, 'end_timestamp': 1693533600 },
         { 'name': '2023_drizzle_season', 'start_timestamp': 1693533600, 'end_timestamp': 1701396000 },
         { 'name': '2023_chill_season', 'start_timestamp': 1701396000, 'end_timestamp': 1709258400 },
+        { 'name': '2024_fresh_season', 'start_timestamp': 1709258400, 'end_timestamp': 1717207200 },
     ]
 }
 

@@ -3,5 +3,15 @@
         "version": "6.0.2",
         "effectiveDate": 1703208600,
         "dataFolder": "v6_0_2"
+    },
+    {
+        "version": "6.1.0",
+        "effectiveDate": 1706146200,
+        "dataFolder": "v6_0_2"
+    },
+    {
+        "version": "7.0.0",
+        "effectiveDate": 1708567200,
+        "dataFolder": "v6_0_2"
     }
 ]

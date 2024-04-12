@@ -35,8 +35,8 @@ def save_all_frames(video_path, dir_path, basename, interval=10):
         n += 1
 
 
-src_dir = '/Users/maohika/Downloads/movies'
-dst_dir = '/Users/maohika/Downloads/images'
+src_dir = 'C:/work/temp/movies'
+dst_dir = 'C:/work/temp/images'
 os.makedirs(dst_dir, exist_ok=True)
 
 paths = [src_dir]

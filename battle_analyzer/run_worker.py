@@ -417,9 +417,10 @@ def analyze(
     analysis_per_secode: int,
     err_code: Value):
     try:
-        create_prod_logger('battle_analyzer')
+        module_name = 'battle_analyzer'
+        create_prod_logger(module_name)
         model_paths = get_model_paths()
-        analyzer = BattleAnalyzer(model_paths=model_paths, device=device, log_name='battle_analyzer')
+        analyzer = BattleAnalyzer(model_paths=model_paths, device=device, log_name=module_name)
         preprocess_result = analyzer.preprocess(BattlePreprocessParams(
             battle_movie_path=movie_path,
             movie_date=battle_date,

@@ -1,0 +1,13 @@
+{
+    "title": "Splatoon3",
+    "version": "7.0.0",
+    "bukiId": "gaen_ff",
+    "bukiName": "ガエンFF",
+    "bukiType": "maneuver",
+    "subWeapon": "trap",
+    "spWeapon": "megaphone_laser_51ch",
+    "spRequiredPoints": 200,
+    "weight": "middle",
+    "mainWeapon": {
+    }
+}

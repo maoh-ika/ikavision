@@ -1,0 +1,13 @@
+{
+    "title": "Splatoon3",
+    "version": "7.0.0",
+    "bukiId": "4k_scope_custom",
+    "bukiName": "4Kスコープカスタム",
+    "bukiType": "charger",
+    "subWeapon": "jump_beacon",
+    "spWeapon": "teioh_ika",
+    "spRequiredPoints": 200,
+    "weight": "heavy",
+    "mainWeapon": {
+    }
+}

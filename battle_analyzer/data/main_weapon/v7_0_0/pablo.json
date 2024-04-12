@@ -1,0 +1,48 @@
+{
+    "title": "Splatoon3",
+    "version": "1.2.1",
+    "bukiId": "pablo",
+    "bukiName": "\u30d1\u30d6\u30ed",
+    "bukiType": "fude",
+    "subWeapon": "splash_bomb",
+    "spWeapon": "megaphone_laser_51ch",
+    "spRequiredPoints": 180,
+    "weight": "light",
+    "mainWeapon": {
+        "shake": {
+            "minEffectiveRange": 1.4,
+            "maxEffectiveRange": 1.4,
+            "minPaintRange": 2.3,
+            "maxPaintRange": 2.3,
+            "minHitDamage": 7.5,
+            "maxHitDamage": 30.0,
+            "minCertainKillNumber": 4.0,
+            "maxCertainKillNumber": 14.0,
+            "shootIntervalFrames": 7,
+            "secondsPerKill": 0.367,
+            "dps": 257.14,
+            "shootingDurationSeconds": 5.833,
+            "shootRecoveryFrames": 10,
+            "inkConsumptionPercent": 2.0,
+            "shootCapability": 50.0,
+            "hitoSpeedInShooting": 0.5,
+            "inkRecoveryFrames": 30,
+            "hitoSpeed": 1.04,
+            "paintPointPerShoot": 10.3,
+            "ikaSpeed": 2.0
+        },
+        "paint": {
+            "minHitDamage": 20.0,
+            "maxHitDamage": 20.0,
+            "minCertainKillNumber": 5.0,
+            "maxCertainKillNumber": 5.0,
+            "paintMovingDuration": 12.3,
+            "paintMovingRange": 0.24,
+            "inkConsumptionPercent": 8.1,
+            "shootCapability": null,
+            "minPaintMovingSpeed": 1.92,
+            "maxPaintMovingSpeed": 1.92,
+            "inkRecoveryFrames": 20
+        }
+    }
+}

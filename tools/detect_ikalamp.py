@@ -45,7 +45,7 @@ def drow_bbox(pred, names, annotator):
 buki_model = YOLO("models/buki/best.pt")
 global idx
 idx = 0
-def detect_buki(pred, img, frame, dst_buki):
+def detect_buki(pred, img, frame, dst_buki, image_name):
     global idx
     save_img = False
     buki_found = False
@@ -65,13 +65,12 @@ def detect_buki(pred, img, frame, dst_buki):
                 out_path = f'{dst_buki}/' + buki_name
                 if not os.path.exists(out_path):
                     os.makedirs(out_path)
-                t = int(time.time() * 1000)
-                cv2.imwrite(f'{out_path}/{t}.jpg', lamp)
+                cv2.imwrite(f'{out_path}/{image_name}_{frame}.jpg', lamp)
                 idx += 1
                 buki_found = True
 
-    if False:
     #if save_img:
+    if False:
         out_path = './temp/stage'
         if not os.path.exists(out_path):
             os.makedirs(out_path)
@@ -83,14 +82,14 @@ def detect_buki(pred, img, frame, dst_buki):
 lamp_model = YOLO("models/ikalamp/best.pt")
 ika_model = YOLO("models/ika/best.pt")
 
-buki_detection = False
-save_lamp = True
-interval = 1
+buki_detection = True
+save_lamp = False
+interval = 30
 sp_death_th = 0
-start_frame = 7700 
-src_dir = '/Users/maoh_ika/Downloads/movies'
-dst_buki = '/Users/maoh_ika/Downloads/buki'
-dst_lamp = '/Users/maoh_ika/Downloads/ikalamp'
+start_frame = 0 
+src_dir = 'C:/work/movies/RECentral'
+dst_buki = 'C:/work/temp/buki'
+dst_lamp = 'C:/work/temp/ikalamp'
 os.makedirs(dst_buki, exist_ok=True)
 os.makedirs(dst_lamp, exist_ok=True)
 paths = list(Path(src_dir).rglob('*.mp4'))
@@ -158,6 +157,6 @@ for path in paths:
             f.close()
         
         if buki_detection:
-            if detect_buki(lamp_preds[0], origin, frame, dst_buki):
+            if detect_buki(lamp_preds[0], origin, frame, dst_buki, image_name):
                 buki_frame_count += 1
         frame += 1

@@ -10,7 +10,6 @@
         </RouterLink>
         <q-toolbar-title style="width: 150px;">IkaVision</q-toolbar-title>
         <q-space />
-        <!--
         <q-btn-dropdown v-show="curMatchType === 'x_match'" auto-close flat>
           <template v-slot:label>
             <div class="row items-center no-wrap">
@@ -49,7 +48,6 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
-      -->
       </q-toolbar>
       <q-banner v-if="showEnvChangedText" dense inline-actions class="bg-secondary text-black text-center">
         <div class="cst-description">{{ envChangedText }}</div>
@@ -118,6 +116,7 @@
             </q-item>
           </RouterLink>
           
+          <!--
           <q-separator />
 
           <RouterLink :to="{ name: 'docs', params: { topic: 'what-is-ikavision'} }">
@@ -130,6 +129,7 @@
               </q-item-section>
             </q-item>
           </RouterLink>
+           -->
         </q-list>
       </q-scroll-area>
     </q-drawer>
