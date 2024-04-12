@@ -116,6 +116,7 @@
             </q-item>
           </RouterLink>
           
+          <!--
           <q-separator />
 
           <RouterLink :to="{ name: 'docs', params: { topic: 'what-is-ikavision'} }">
@@ -128,6 +129,7 @@
               </q-item-section>
             </q-item>
           </RouterLink>
+           -->
         </q-list>
       </q-scroll-area>
     </q-drawer>

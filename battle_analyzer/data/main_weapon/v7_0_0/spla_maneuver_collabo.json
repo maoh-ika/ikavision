@@ -6,7 +6,7 @@
     "bukiType": "maneuver",
     "subWeapon": "curling_bomb",
     "spWeapon": "ultra_tyakuti",
-    "spRequiredPoints": 190,
+    "spRequiredPoints": 200,
     "weight": "middle",
     "mainWeapon": {
         "slide": {

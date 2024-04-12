@@ -109,7 +109,29 @@ export type MainWeapon =
   'sblast91' |
   'spla_maneuver_collabo' |
   'spy_gadget_solare' |
-  'vincent_nouveau'
+  'vincent_nouveau' |
+  'octa_shooter_replica' |
+  'order_blaster_replica' |
+  'order_brush_replica' |
+  'order_charger_replica' |
+  'order_maneuver_replica' |
+  'order_roller_replica' |
+  'order_shelter_replica' |
+  'order_shooter_replica' |
+  'order_spinner_replica' |
+  'order_stringer_replica' |
+  'order_wiper_replica' |
+  'classic_squiffer_beta' |
+  '24shiki_harikaegasa_kou' |
+  '52gallon_deco' |
+  'moplin_d' |
+  'eliter_4k_custom' |
+  'gaen_ff' |
+  'variable_roller_foil' |
+  '4k_scope_custom' |
+  'nautilus79' |
+  'explosher_custom' |
+  'kelvin525_deco'
 
 export type SubWeapon =
   'unknown' |

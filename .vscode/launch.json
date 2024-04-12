@@ -2044,7 +2044,7 @@
       "program": "${workspaceFolder}/battle_analyzer/run_youtube_monitor.py",
       "console": "integratedTerminal",
       "justMyCode": false,
-      "args": ["--user_id", "splatoon3_environment", "--max_workers", "1", "--reverse"]
+      "args": ["--user_id", "splatoon3_environment", "--max_workers", "1", "--max_videos", "1"]
     }
   ]
 }

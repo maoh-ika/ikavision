@@ -7,7 +7,6 @@ import boto3
 from boto3.dynamodb.types import TypeDeserializer
 from run_worker import get_model_paths
 from tools.download_ytb import get_list
-from tools.ytb_filter import filters
 
 load_dotenv()
 

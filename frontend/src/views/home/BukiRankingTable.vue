@@ -50,9 +50,11 @@
                 <q-td key="value" :props="props">
                   {{ props.row.value + valueUnit }}
                 </q-td>
+                <!--
                 <q-td key="rocIn24h" :props="props" :class="{increase: props.row.rocIn24h > 0, decrease: props.row.rocIn24h < 0}" >
                   {{ `${round(props.row.rocIn24h * 100, 10)}%` }}
                 </q-td>
+                -->
               </q-tr>
             </template>
           </q-table>
@@ -110,7 +112,7 @@ export default defineComponent({
       { name: 'number', label: 'No.', field: 'number', align: 'left', sortable: false , classes: 'rowItem cst-text-overflow', headerClasses: 'cst-caption'},
       { name: 'bukiId', label: t.t('general.buki'), field: 'bukiId', align: 'left', sortable: false, style: 'max-width: 150px', classes: 'rowItem cst-text-overflow', headerClasses: 'cst-caption' },
       { name: 'value', label: props.valueColumnName, field: 'value', align: 'left', sortable: true, classes: 'cst-text-overflow', headerClasses: 'cst-caption' },
-      { name: 'rocIn24h', label: t.t('general.rocIn24h'), field: 'rocIn24h', align: 'left', sortable: true, classes: 'cst-text-overflow', headerClasses: 'cst-caption'},
+      //{ name: 'rocIn24h', label: t.t('general.rocIn24h'), field: 'rocIn24h', align: 'left', sortable: true, classes: 'cst-text-overflow', headerClasses: 'cst-caption'},
     ]
 
     const carouselItems = computed(() => {

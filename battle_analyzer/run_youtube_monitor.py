@@ -104,9 +104,9 @@ def run_job(user_id: str, save_dir: str, workers: int, after: int=None, before: 
                     prev_videos = prev_videos_list[-1]
                 prev_videos.sort(key=lambda v: v['published_at'])
                 if reverse and published_before is None:
-                    published_before = prev_videos[0]['published_at']
+                    published_before = prev_videos[0]['published_at'] - 1
                 elif not reverse and published_after is None:
-                    published_after = prev_videos[-1]['published_at']
+                    published_after = prev_videos[-1]['published_at'] + 1
                 prev_videos = list(filter(lambda v: v['id'] != '__dummy__', prev_videos))
 
     if retry and len(prev_videos) > 0:
@@ -178,17 +178,17 @@ if __name__ == '__main__':
         print('retry all')
         retry(args.user_id, save_dir, args.max_workers, after, before, args.max_videos)
     else:
-        interval = 1
-        print(f'monitor youtube {args.user_id} every {interval} hours')
-        #schedule.every(interval).hours.do(get_job(args.user_id, save_dir, args.max_workers))
-        if not run_job(args.user_id, save_dir, args.max_workers, after, before, args.reverse, args.retry, args.max_videos):
-            # daily api quota run out
-            print('wait for refiling api quota')
-            time.sleep(3 * 60 * 60)
+        interval = 60 * 60 * 4
         while True:
-            if not run_job(args.user_id, save_dir, args.max_workers, None, None, args.reverse, args.retry, args.max_videos):
+            before = time.time()
+            api_success = run_job(args.user_id, save_dir, args.max_workers, None, None, args.reverse, args.retry, args.max_videos)
+            if not api_success:
                 print('wait for refiling api quota')
-                time.sleep(3 * 60 * 60)
+                time.sleep(interval)
             else:
-                time.sleep(1)
+                sleep_seconds = interval - (time.time() - before)
+                if sleep_seconds < 0:
+                    sleep_seconds = 0
+                print(f'sleep {sleep_seconds} seconds')
+                time.sleep(sleep_seconds)
                 

@@ -1,8 +1,8 @@
-path: /home/maohika/work/ika/dataset/stage
+path: C:/work/ikavision/dataset/stage
 train: train
 val: val
 
-nc: 30
+nc: 31
 names: [
   'stage_amabi_onion',
   'stage_cyozame_drop',
@@ -33,5 +33,6 @@ names: [
   'stage_zatou_board',
   'stage_kusaya_bamboo',
   'stage_bangaitei_board',
-  'stage_negitoro_reel'
+  'stage_negitoro_reel',
+  'stage_kaziki_pillar'
 ]

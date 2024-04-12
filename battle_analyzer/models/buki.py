@@ -126,6 +126,17 @@ main_labels = {
     'order_spinner_replica': 'オーダースピナーレプリカ',
     'order_stringer_replica': 'オーダーストリンガーレプリカ',
     'order_wiper_replica': 'オーダーワイパーレプリカ',
+    'classic_squiffer_beta': 'スクイックリンβ',
+    '24shiki_harikaegasa_kou': '24式張替傘・甲',
+    '52gallon_deco': '.52ガロンデコ',
+    'moplin_d': 'モップリンD',
+    'eliter_4k_custom': 'リッター4Kカスタム',
+    'gaen_ff': 'ガエンFF',
+    'variable_roller_foil': 'ヴァリアブルローラーフォイル',
+    '4k_scope_custom': '4Kスコープカスタム',
+    'nautilus79': 'ノーチラス79',
+    'explosher_custom': 'エクスプロッシャーカスタム',
+    'kelvin525_deco': 'ケルビン525デコ',
 }
 
 sub_labels = {
@@ -290,6 +301,17 @@ class MainWeapon(Enum):
     ORDER_SPINNER_REPLICA = auto()
     ORDER_STRINGER_REPLICA = auto()
     ORDER_WIPER_REPLICA = auto()
+    CLASSIC_SQUIFFER_BETA = auto()
+    _24SHIKI_HARIKAEGASA_KOU = auto()
+    _52GALLON_DECO = auto()
+    MOPLIN_D = auto()
+    ELITER_4K_CUSTOM = auto()
+    GAEN_FF = auto()
+    VARIABLE_ROLLER_FOIL = auto()
+    _4K_SCOPE_CUSTOM = auto()
+    NAUTILUS79 = auto()
+    EXPLOSHER_CUSTOM = auto()
+    KELVIN525_DECO = auto()
 
 class SubWeapon(Enum):
     UNKNOWN = auto()

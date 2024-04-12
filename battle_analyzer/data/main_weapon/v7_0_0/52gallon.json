@@ -6,7 +6,7 @@
     "bukiType": "shooter",
     "subWeapon": "splash_shield",
     "spWeapon": "megaphone_laser_51ch",
-    "spRequiredPoints": 190,
+    "spRequiredPoints": 200,
     "weight": "middle",
     "mainWeapon": {
         "minEffectiveRange": 2.6,
